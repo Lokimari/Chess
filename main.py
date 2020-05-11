@@ -85,7 +85,7 @@ class ChessGame:
             move = input(f"Player {self.player_turn}, enter move: ")
             try:
                 move = move_from_string(move)
-                self.board.move(move)
+                self.board.move(move, self.player_turn)
                 self.next_player_turn()
             except ValueError:
                 print("Invalid Input")
@@ -95,6 +95,8 @@ class ChessGame:
                 print("Illegal move!")
             except OutOfBounds:
                 print("Out of Bounds!")
+            except ThatsNotUrFuckinTeam:
+                print("Wrong team, dingus!")
 
     def next_player_turn(self):
         self.player_turn = 2 if self.player_turn == 1 else 1
@@ -117,6 +119,10 @@ class IllegalMove(Exception):
 
 
 class OutOfBounds(Exception):
+    pass
+
+
+class ThatsNotUrFuckinTeam(Exception):
     pass
 
 
@@ -146,7 +152,7 @@ class ChessBoard:
 
         print(board_string)
 
-    def move(self, move):
+    def move(self, move, player_team):
         cur = move.old
         new = move.new
 
@@ -154,6 +160,8 @@ class ChessBoard:
             raise OutOfBounds()
 
         piece = self.spaces[cur.x][cur.y]
+        if not piece.team == player_team:
+            raise ThatsNotUrFuckinTeam()
 
         if piece is None:
             raise NoPieceInSpace()
