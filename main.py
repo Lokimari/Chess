@@ -70,6 +70,30 @@ from colorama import init
 from termcolor import colored
 
 
+class ChessGame:
+    def run(self):
+        the_king = King()
+        a_bishop = Bishop()
+        a_rook = Rook()
+        a_pony = Knight()
+        queenie = Queen()
+        chess_board = ChessBoard()
+        chess_board.spaces[3][3] = queenie
+        chess_board.spaces[2][3] = a_bishop
+        chess_board.spaces[7][7] = the_king
+        chess_board.spaces[3][4] = a_rook
+        chess_board.spaces[4][4] = a_pony
+
+        while True:
+            chess_board.display()
+            move = input("Enter move: ")
+            try:
+                move = move_from_string(move)
+                chess_board.move(move)
+            except ValueError:
+                print("Invalid Input")
+
+
 class ChessBoard:
     def __init__(self):
         self.spaces = []
@@ -211,26 +235,8 @@ def move_from_string(string):
 
 
 def main():
-    the_king = King()
-    a_bishop = Bishop()
-    a_rook = Rook()
-    a_pony = Knight()
-    queenie = Queen()
-    chess_board = ChessBoard()
-    chess_board.spaces[3][3] = queenie
-    chess_board.spaces[2][3] = a_bishop
-    chess_board.spaces[7][7] = the_king
-    chess_board.spaces[3][4] = a_rook
-    chess_board.spaces[4][4] = a_pony
-
-    while True:
-        chess_board.display()
-        move = input("Enter move: ")
-        try:
-            move = move_from_string(move)
-            chess_board.move(move)
-        except ValueError:
-            print("Invalid Input")
+    game = ChessGame()
+    game.run()
 
 
 if __name__ == "__main__":
