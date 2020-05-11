@@ -73,18 +73,9 @@ from termcolor import colored
 class ChessGame:
     def __init__(self):
         self.board = ChessBoard()
+        self.setup_pieces()
 
     def run(self):
-        the_king = King(team=1)
-        a_bishop = Bishop(team=1)
-        a_rook = Rook(team=1)
-        a_pony = Knight(team=1)
-        queenie = Queen(team=1)
-        self.board.spaces[3][3] = queenie
-        self.board.spaces[2][3] = a_bishop
-        self.board.spaces[7][7] = the_king
-        self.board.spaces[3][4] = a_rook
-        self.board.spaces[4][4] = a_pony
         while True:
             self.board.display()
             move = input("Enter move: ")
@@ -94,6 +85,12 @@ class ChessGame:
             except ValueError:
                 print("Invalid Input")
 
+    def setup_pieces(self):
+        self.board.spaces[3][3] = Queen(team=1)
+        self.board.spaces[2][3] = Bishop(team=1)
+        self.board.spaces[7][7] = Rook(team=1)
+        self.board.spaces[3][4] = Knight(team=1)
+        self.board.spaces[4][4] = King(team=1)
 
 class ChessBoard:
     def __init__(self):
