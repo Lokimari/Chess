@@ -69,6 +69,9 @@
 from colorama import init
 from termcolor import colored
 
+# Allow piece color for cmd
+init()
+
 
 class ChessGame:
     def __init__(self):
@@ -86,11 +89,13 @@ class ChessGame:
                 print("Invalid Input")
 
     def setup_pieces(self):
-        self.board.spaces[3][3] = Queen(team=1)
-        self.board.spaces[2][3] = Bishop(team=1)
-        self.board.spaces[7][7] = Rook(team=1)
-        self.board.spaces[3][4] = Knight(team=1)
-        self.board.spaces[4][4] = King(team=1)
+        # self.board.spaces[3][3] = Queen(team=1)
+        # self.board.spaces[2][3] = Bishop(team=1)
+        # self.board.spaces[7][7] = Rook(team=1)
+        # self.board.spaces[3][4] = Knight(team=1)
+        self.board.spaces[4][4] = King(team=1, color="yellow")
+        self.board.spaces[6][6] = King(team=2, color="magenta")
+
 
 class ChessBoard:
     def __init__(self):
@@ -162,10 +167,10 @@ class Vec2:
 
 
 class King:
-    def __init__(self, team):
+    def __init__(self, team, color="white"):
+        self.color = color
         self.team = team
         self.name = "King"
-        self.color = "white"
 
     def __str__(self):
         return colored("K", self.color)
@@ -175,10 +180,10 @@ class King:
 
 
 class Queen:
-    def __init__(self, team):
+    def __init__(self, team, color="white"):
+        self.color = color
         self.team = team
         self.name = "Queen"
-        self.color = "white"
 
     def __str__(self):
         return colored("Q", self.color)
@@ -190,10 +195,10 @@ class Queen:
 
 
 class Bishop:
-    def __init__(self, team):
+    def __init__(self, team, color="white"):
+        self.color = color
         self.team = team
         self.name = "Bishop"
-        self.color = "white"
 
     def __str__(self):
         return colored("B", self.color)
@@ -204,10 +209,10 @@ class Bishop:
 
 
 class Rook:
-    def __init__(self, team):
+    def __init__(self, team, color="white"):
+        self.color = color
         self.team = team
         self.name = "Rook"
-        self.color = "white"
 
     def __str__(self):
         return colored("R", self.color)
@@ -217,10 +222,10 @@ class Rook:
 
 
 class Knight:
-    def __init__(self, team):
+    def __init__(self, team, color="white"):
+        self.color = color
         self.team = team
         self.name = "Knight"
-        self.color = "white"
 
     def __str__(self):
         return colored("H", self.color)
