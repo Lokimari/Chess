@@ -69,19 +69,20 @@
 from colorama import init
 from termcolor import colored
 
+
 class ChessBoard:
     def __init__(self):
         self.spaces = []
         self.build()
 
     def build(self):
-        for x in range(0,8):
+        for x in range(0, 8):
             self.spaces.append([None for space in range(0, 8)])
 
     def display(self):
         # row_num = 8
-        row_num = 1
-        board_string = "    1 2 3 4 5 6 7 8"
+        row_num = 0
+        board_string = "    0 1 2 3 4 5 6 7"
         for row in self.spaces:
             board_string += "\n" + str(row_num) + " [ "
             row_num += 1
@@ -89,12 +90,15 @@ class ChessBoard:
             for val in row:
                 if val is None:
                     board_string += "_ "
-                else: board_string += str(val) + " "
+                else:
+                    board_string += str(val) + " "
             board_string += "]"
 
         print(board_string)
 
-    def move(self, cur, new):
+    def move(self, move):
+        cur = move.old
+        new = move.new
 
         if not self.in_board(cur) or not self.in_board(new):
             print("Out of bounds")
@@ -105,17 +109,26 @@ class ChessBoard:
         if piece is None:
             print("No piece in space")
         else:
-            if piece.can_move(cur, new):
+            if piece.can_move(move):
                 print("Moving...")
+                print(move)
                 self.spaces[new.x][new.y] = piece
                 self.spaces[cur.x][cur.y] = None
             else:
                 print("ILLEGAL")
 
-
     def in_board(self, pos):
-        print(pos)
         return not (pos.x < 0 or pos.x > 7 or pos.y < 0 or pos.y > 7)
+
+
+class Move:
+    def __init__(self, old, new):
+        self.old = old
+        self.new = new
+
+    def __str__(self):
+        return str(self.old) + " -> " + str(self.new)
+
 
 class Vec2:
     def __init__(self, x, y):
@@ -123,67 +136,78 @@ class Vec2:
         self.y = y
 
     def __str__(self):
-        return "(" + str(self.x)+ "," + str(self.y) + ")"
+        return f"({self.x},{self.y})"
+
 
 class King:
     def __init__(self):
         self.name = "King"
         self.color = "white"
+
     def __str__(self):
         return colored("K", self.color)
 
-    def can_move(self, cur, new):
-        return abs(new.y - cur.y) <= 1 and abs(new.x - cur.x) <= 1
+    def can_move(self, move):
+        return abs(move.new.y - move.old.y) <= 1 and abs(move.new.x - move.old.x) <= 1
+
 
 class Queen:
     def __init__(self):
         self.name = "Queen"
         self.color = "white"
+
     def __str__(self):
         return colored("Q", self.color)
 
-    def can_move(self, cur, new):
-        return (new.x == cur.x or new.y == cur.y or
-               (cur.x - cur.y == new.x - new.y) or
-               (cur.x + cur.y == new.x + new.y))
+    def can_move(self, move):
+        return (move.new.x == move.old.x or move.new.y == move.old.y or
+                (move.old.x - move.old.y == move.new.x - move.new.y) or
+                (move.old.x + move.old.y == move.new.x + move.new.y))
+
 
 class Bishop:
     def __init__(self):
         self.name = "Bishop"
         self.color = "white"
+
     def __str__(self):
         return colored("B", self.color)
 
-    def can_move(self, cur, new):
-        return ((cur.x - cur.y == new.x - new.y) or
-                (cur.x + cur.y == new.x + new.y))
+    def can_move(self, move):
+        return ((move.old.x - move.old.y == move.new.x - move.new.y) or
+                (move.old.x + move.old.y == move.new.x + move.new.y))
+
 
 class Rook:
     def __init__(self):
         self.name = "Rook"
         self.color = "white"
+
     def __str__(self):
         return colored("R", self.color)
 
-    def can_move(self, cur, new):
-        return new.x == cur.x or new.y == cur.y
+    def can_move(self, move):
+        return move.new.x == move.old.x or move.new.y == move.old.y
+
 
 class Knight:
     def __init__(self):
         self.name = "Knight"
         self.color = "white"
+
     def __str__(self):
         return colored("H", self.color)
 
-    def can_move(self, cur, new):
-        return (((abs(new.x - cur.x) == 2) and abs(cur.y - new.y) == 1) or
-                ((abs(new.x - cur.x) == 1) and abs(cur.y - new.y) == 2))
+    def can_move(self, move):
+        return (((abs(move.new.x - move.old.x) == 2) and abs(move.old.y - move.new.y) == 1) or
+                ((abs(move.new.x - move.old.x) == 1) and abs(move.old.y - move.new.y) == 2))
+
 
 # Example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
 def move_from_string(string):
-    inputs = [int(num) - 1 for num in string.split(",")]
+    inputs = [int(num) for num in string.split(",")]
     cur_x, cur_y, new_x, new_y = inputs
-    return [Vec2(cur_x, cur_y), Vec2(new_x, new_y)]
+    return Move(Vec2(cur_x, cur_y), Vec2(new_x, new_y))
 
 
 def main():
@@ -203,10 +227,11 @@ def main():
         chess_board.display()
         move = input("Enter move: ")
         try:
-            cur, new = move_from_string(move)
-            chess_board.move(cur, new)
+            move = move_from_string(move)
+            chess_board.move(move)
         except ValueError:
             print("Invalid Input")
+
 
 if __name__ == "__main__":
     main()
