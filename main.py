@@ -75,11 +75,11 @@ class ChessGame:
         self.board = ChessBoard()
 
     def run(self):
-        the_king = King()
-        a_bishop = Bishop()
-        a_rook = Rook()
-        a_pony = Knight()
-        queenie = Queen()
+        the_king = King(team=1)
+        a_bishop = Bishop(team=1)
+        a_rook = Rook(team=1)
+        a_pony = Knight(team=1)
+        queenie = Queen(team=1)
         self.board.spaces[3][3] = queenie
         self.board.spaces[2][3] = a_bishop
         self.board.spaces[7][7] = the_king
@@ -165,7 +165,8 @@ class Vec2:
 
 
 class King:
-    def __init__(self):
+    def __init__(self, team):
+        self.team = team
         self.name = "King"
         self.color = "white"
 
@@ -177,7 +178,8 @@ class King:
 
 
 class Queen:
-    def __init__(self):
+    def __init__(self, team):
+        self.team = team
         self.name = "Queen"
         self.color = "white"
 
@@ -191,7 +193,8 @@ class Queen:
 
 
 class Bishop:
-    def __init__(self):
+    def __init__(self, team):
+        self.team = team
         self.name = "Bishop"
         self.color = "white"
 
@@ -204,7 +207,8 @@ class Bishop:
 
 
 class Rook:
-    def __init__(self):
+    def __init__(self, team):
+        self.team = team
         self.name = "Rook"
         self.color = "white"
 
@@ -216,7 +220,8 @@ class Rook:
 
 
 class Knight:
-    def __init__(self):
+    def __init__(self, team):
+        self.team = team
         self.name = "Knight"
         self.color = "white"
 
@@ -226,6 +231,10 @@ class Knight:
     def can_move(self, move):
         return (((abs(move.new.x - move.old.x) == 2) and abs(move.old.y - move.new.y) == 1) or
                 ((abs(move.new.x - move.old.x) == 1) and abs(move.old.y - move.new.y) == 2))
+
+
+class Pawn:
+    pass
 
 
 # Example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
