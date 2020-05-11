@@ -77,16 +77,27 @@ class ChessGame:
     def __init__(self):
         self.board = ChessBoard()
         self.setup_pieces()
+        self.player_turn = 1
 
     def run(self):
         while True:
             self.board.display()
-            move = input("Enter move: ")
+            move = input(f"Player {self.player_turn}, enter move: ")
             try:
                 move = move_from_string(move)
                 self.board.move(move)
+                self.next_player_turn()
             except ValueError:
                 print("Invalid Input")
+            except NoPieceInSpace:
+                print("No Piece in Space!")
+            except IllegalMove:
+                print("Illegal move!")
+            except OutOfBounds:
+                print("Out of Bounds!")
+
+    def next_player_turn(self):
+        self.player_turn = 2 if self.player_turn == 1 else 1
 
     def setup_pieces(self):
         # self.board.spaces[3][3] = Queen(team=1)
@@ -95,6 +106,18 @@ class ChessGame:
         # self.board.spaces[3][4] = Knight(team=1)
         self.board.spaces[4][4] = King(team=1, color="yellow")
         self.board.spaces[6][6] = King(team=2, color="magenta")
+
+
+class NoPieceInSpace(Exception):
+    pass
+
+
+class IllegalMove(Exception):
+    pass
+
+
+class OutOfBounds(Exception):
+    pass
 
 
 class ChessBoard:
@@ -128,13 +151,12 @@ class ChessBoard:
         new = move.new
 
         if not self.in_board(cur) or not self.in_board(new):
-            print("Out of bounds")
-            return
+            raise OutOfBounds()
 
         piece = self.spaces[cur.x][cur.y]
 
         if piece is None:
-            print("No piece in space")
+            raise NoPieceInSpace()
         else:
             if piece.can_move(move):
                 print("Moving...")
@@ -142,7 +164,7 @@ class ChessBoard:
                 self.spaces[new.x][new.y] = piece
                 self.spaces[cur.x][cur.y] = None
             else:
-                print("ILLEGAL")
+                raise IllegalMove()
 
     def in_board(self, pos):
         return not (pos.x < 0 or pos.x > 7 or pos.y < 0 or pos.y > 7)
