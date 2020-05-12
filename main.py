@@ -1,7 +1,80 @@
+#  Homework #15: Chess (Part 1)
+# Create a `Board` class. This class should have 1 property, `spaces`, that is an 8x8 list of lists initialized to None.
+# In addition, this class should have a method named `display` that prints out something similar to the following example.
+# And, to clarify, `display` should be printing each cell in `spaces` - do not hard code it. You're going to have to explicitly handle converting None into a string.
+#
+# Example:
+#     a b c d e f g h
+# 8 [ _ _ _ _ _ _ _ _ ]
+# 7 [ _ _ _ _ _ _ _ _ ]
+# 6 [ _ _ _ _ _ _ _ _ ]
+# 5 [ _ _ _ _ _ _ _ _ ]
+# 4 [ _ _ _ _ _ _ _ _ ]
+# 3 [ _ _ _ _ _ _ _ _ ]
+# 2 [ _ _ _ _ _ _ _ _ ]
+# 1 [ _ _ _ _ _ _ _ _ ]
+#
+# then
+# Create a `main` function that...
+# 1. Creates a Board
+# 2. (in an infinite loop) displays the board, prompts the user for input, saves the user's input to a variable, and then prints the user's input back to them
+
+# Homework #15: Chess Movement (Part 2)
+# 1. Create a `King` piece that implements `__str__`. Then, create a method,
+# `King#can_move(cur_x, cur_y, new_x, new_y)`
+# that returns true if the king is allowed to move from their current position to the new position.
+# For example, `king.can_move(5, 5, 6, 5)` (moving 1 space to the right) should return true, but `king.can_move(5, 5, 7, 5)` (moving 2 spaces to the right) should return false.
+#
+# 2. Create a method, `Board#move(old_x, old_y, new_x, new_y)`, that when called either...
+# (1) prints that there is no piece in position (old_x, old_y) to move,
+# (2) prints that a move is illegal based on the results of calling `can_move`, or
+# (3) moves the piece from the original position to the new position and prints something along the lines of 'moved piece from old_x, old_y to new_x, new_y'
+#
+# 3. (extra credit) give the king a `name` property, so that you can print a nicer message (e.g. 'moved piece.name from old_x, old_y to new_x, new_y')
+#
+# Notes:
+# * The user input is not being used at this point. Test your program by manually placing a king on the board and moving it. For example...
+# chess_board.spaces[3][3] = King()
+# chess_board.display()
+# chess_board.move(3, 3, 4, 3) # should move piece and print nice message
+# chess_board.display()
+# chess_board.move(3, 3, 7, 3) # should not move piece and print illegal move
+# chess_board.display() # should not have changed positions
+#
+# * Feel free to implement more pieces; but, do not implement pawns yet since they have team-dependent movement.
+# * All chess coordinates are based on list indices (index-es) at this point. Using a chess-based coordinate system (e.g. "a6", "e5") is its own feature and will come at a later point in time.
+
+# there's 4 things that need to happen for pawns:
+# 1. orientation
+# 2. team / owner
+# 3. has_moved / last_moved_turn (for the first move and eventually en passants)
+# 4. most likely passing board at the end of can_move as an optional argument
+#
+# we'll build up to the pawns after establishing  ChessGame (i.e. a chess match). that way we have the piece orientation and teams worked out
+# to keep slowly building things up, here's 2 suggestions:
+#
+# 1) Add a color property to every piece that defaults to "white". Using the colored function from termcolor in conjunction with colorama (both external libraries)
+# you should be able to create colored pieces (e.g. King(color="magenta"). Here's a basic sample using these libraries:
+# from colorama import init
+# from termcolor import colored
+#
+# # Makes it so that colored text gets properly escaped in Windows.
+# init()
+#
+# print(colored("Boop", "cyan"))
+#
+#
+# 2) Create a Vec2 class that has x and y properties. Use it to simplify the program (e.g. old_x and old_y is really old = Vec2(x, y); old.x; old.y
+
+# To-do: add Check and Checkmate logic
+# add fork notification
+
 # Coloration
 from colorama import init
 from termcolor import colored
+
 init()  # Necessary for command prompt coloration
+
 
 # Game Process
 class ChessGame:
@@ -22,7 +95,7 @@ class ChessGame:
 
             # Error Handling
             except AttributeError:
-                print("Empty space selected.")
+                print("Empty space selected")
             except ValueError:
                 print("Invalid Input")
             except NoPieceInSpace:
@@ -33,6 +106,8 @@ class ChessGame:
                 print("Out of Bounds!")
             except ThatsNotUrFuckinTeam:
                 print("Wrong team, dingus!")
+            except FriendlySpaceOccupied:
+                print("You already have a piece there")
 
     # *Should* only trigger when a player has successfully moved
     def next_player_turn(self):
@@ -49,8 +124,8 @@ class ChessGame:
         self.board.spaces[0][6] = Knight(team=2, color="magenta")
         self.board.spaces[0][2] = Bishop(team=2, color="magenta")
         self.board.spaces[0][5] = Bishop(team=2, color="magenta")
-        self.board.spaces[0][4] = King(team=2, color="magenta")
-        self.board.spaces[0][3] = Queen(team=2, color="magenta")
+        self.board.spaces[0][3] = King(team=2, color="magenta")
+        self.board.spaces[0][4] = Queen(team=2, color="magenta")
 
         # Bottom Team
         for num in range(0, 8):
@@ -64,14 +139,25 @@ class ChessGame:
         self.board.spaces[7][4] = King(team=1, color="yellow")
         self.board.spaces[7][3] = Queen(team=1, color="yellow")
 
+
 # Error Handling
 class NoPieceInSpace(Exception):
     pass
+
+
 class IllegalMove(Exception):
     pass
+
+
 class OutOfBounds(Exception):
     pass
+
+
 class ThatsNotUrFuckinTeam(Exception):
+    pass
+
+
+class FriendlySpaceOccupied(Exception):
     pass
 
 
@@ -110,9 +196,9 @@ class ChessBoard:
         cur = move.old
         new = move.new
         piece = self.spaces[cur.x][cur.y]
-        dest = self.spaces[new.x][new.y]
+        destination = self.spaces[new.x][new.y]
 
-        # Movement logic
+        # Movement Logic
 
         # Preliminary error checks
         if not self.in_board(cur) or not self.in_board(new):
@@ -122,35 +208,35 @@ class ChessBoard:
             raise ThatsNotUrFuckinTeam()
 
         # Start of Movement Logic
-        if piece is None:
-            raise NoPieceInSpace()
-        else:
-            # Movement - To-do: get rid of redundancy here
-            if piece.can_move(move):
-                if dest is None:
-                    print("Moving...")
-                    print(move)
-                    setattr(self.spaces[cur.x][cur.y], 'has_moved', True)  # So pawns can't do wacky stuff
-                    # The actual movement
-                    self.spaces[new.x][new.y] = piece
-                    self.spaces[cur.x][cur.y] = None
-                elif dest is not None and getattr(dest, "team") is player_team:
-                    print("You arleady have a piece there")
-                else:
-                    print("Moving...")
-                    print(move)
-                    print(str(getattr(dest, "name") + " taken"))
-                    setattr(self.spaces[cur.x][cur.y], 'has_moved', True)  # So pawns can't do wacky stuff
-                    # The actual movement
-                    self.spaces[new.x][new.y] = piece
-                    self.spaces[cur.x][cur.y] = None
+        if piece.can_move(move):
+            if destination is None:
+                self.movement(move, player_team)
+            elif getattr(destination, "team") is player_team:
+                raise FriendlySpaceOccupied()
             else:
-                raise IllegalMove()
-            # End of Movement Logic
+                print(str(getattr(destination, "name") + " taken"))
+                self.movement(move, player_team)
+        else:
+            raise IllegalMove()
+
+    # Movement
+    def movement(self, move, player_team):
+        cur = move.old
+        new = move.new
+        piece = self.spaces[cur.x][cur.y]
+
+        print("Moving...")
+        print(move)
+        setattr(self.spaces[cur.x][cur.y], 'has_moved', True)  # So pawns can't do wacky stuff
+        # The actual movement
+        self.spaces[new.x][new.y] = piece
+        self.spaces[cur.x][cur.y] = None
+        # End of Movement Logic
 
     # Prelim bounds check
     def in_board(self, pos):
         return not (pos.x < 0 or pos.x > 7 or pos.y < 0 or pos.y > 7)
+
 
 # Move History (unfinished)
 class Move:
@@ -161,6 +247,7 @@ class Move:
     def __str__(self):
         return str(self.old) + " -> " + str(self.new)
 
+
 # For neatly storing coordinates as class objects
 class Vec2:
     def __init__(self, x, y):
@@ -169,6 +256,7 @@ class Vec2:
 
     def __str__(self):
         return f"({self.x},{self.y})"
+
 
 ######################################################Pieces############################################################
 class King:
@@ -259,8 +347,10 @@ class Pawn:
         return (((((move.new.x - move.old.x == -1) and self.team == 1) or
                   ((move.new.x - move.old.x == -1) and self.team == 2)) if self.has_moved == True else False) or
                 # First Turn Logic
-               (((((move.new.x - move.old.x == -2 or move.new.x - move.old.x == -1) and self.team == 1) or
-                  ((move.new.x - move.old.x ==  2 or move.new.x - move.old.x ==  1) and self.team == 2)) if self.has_moved == False else False)))
+                (((((move.new.x - move.old.x == -2 or move.new.x - move.old.x == -1) and self.team == 1) or
+                   ((
+                            move.new.x - move.old.x == 2 or move.new.x - move.old.x == 1) and self.team == 2)) if self.has_moved == False else False)))
+
 
 ########################################################################################################################
 
