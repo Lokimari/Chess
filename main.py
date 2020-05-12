@@ -105,28 +105,37 @@ class ChessGame:
         self.player_turn = 2 if self.player_turn == 1 else 1
 
     def setup_pieces(self):
-        # self.board.spaces[3][3] = Queen(team=1)
-        # self.board.spaces[2][3] = Bishop(team=1)
-        # self.board.spaces[7][7] = Rook(team=1)
-        # self.board.spaces[3][4] = Knight(team=1)
-        self.board.spaces[6][0] = Pawn(team=1, color="yellow")
-        self.board.spaces[1][0] = Pawn(team=2, color="magenta")
-        # self.board.spaces[4][4] = King(team=1, color="yellow")
-        # self.board.spaces[6][6] = King(team=2, color="magenta")
+        # Top team
+        for num in range(0,8):
+            self.board.spaces[1][num] = Pawn(team=2, color="magenta")
+        self.board.spaces[0][0] = Rook(team=2, color="magenta")
+        self.board.spaces[0][7] = Rook(team=2, color="magenta")
+        self.board.spaces[0][1] = Knight(team=2, color="magenta")
+        self.board.spaces[0][6] = Knight(team=2, color="magenta")
+        self.board.spaces[0][2] = Bishop(team=2, color="magenta")
+        self.board.spaces[0][5] = Bishop(team=2, color="magenta")
+        self.board.spaces[0][3] = King(team=2, color="magenta")
+        self.board.spaces[0][4] = Queen(team=2, color="magenta")
 
+        # Bottom Team
+        for num in range(0,8):
+            self.board.spaces[6][num] = Pawn(team=1, color="yellow")
+        self.board.spaces[7][0] = Rook(team=1, color="yellow")
+        self.board.spaces[7][7] = Rook(team=1, color="yellow")
+        self.board.spaces[7][1] = Knight(team=1, color="yellow")
+        self.board.spaces[7][6] = Knight(team=1, color="yellow")
+        self.board.spaces[7][2] = Bishop(team=1, color="yellow")
+        self.board.spaces[7][5] = Bishop(team=1, color="yellow")
+        self.board.spaces[7][3] = King(team=1, color="yellow")
+        self.board.spaces[7][4] = Queen(team=1, color="yellow")
 
+# Error Handling
 class NoPieceInSpace(Exception):
     pass
-
-
 class IllegalMove(Exception):
     pass
-
-
 class OutOfBounds(Exception):
     pass
-
-
 class ThatsNotUrFuckinTeam(Exception):
     pass
 
@@ -140,6 +149,7 @@ class ChessBoard:
         for x in range(0, 8):
             self.spaces.append([None for space in range(0, 8)])
 
+    # Board printing with variable x/y labels
     def display(self):
         # row_num = 8
         row_num = 0
@@ -157,10 +167,15 @@ class ChessBoard:
 
         print(board_string)
 
+    # Takes Vec2 of current space and destination space, checks each, moves, and sets piece attr "has_moved" = True
     def move(self, move, player_team):
+        # vars
         cur = move.old
         new = move.new
 
+        # Movement logic
+
+        # Preliminary error checks
         if not self.in_board(cur) or not self.in_board(new):
             raise OutOfBounds()
 
@@ -171,21 +186,22 @@ class ChessBoard:
         if piece is None:
             raise NoPieceInSpace()
         else:
+            # Movement
             if piece.can_move(move):
                 print("Moving...")
                 print(move)
-                setattr(self.spaces[cur.x][cur.y], 'has_moved', True)
+                setattr(self.spaces[cur.x][cur.y], 'has_moved', True)# So pawns can't do wacky stuff
+                # The actual movement
                 self.spaces[new.x][new.y] = piece
                 self.spaces[cur.x][cur.y] = None
-
-                # To-do: Change piece's has_moved property to True
             else:
                 raise IllegalMove()
 
+    # Checking bounds
     def in_board(self, pos):
         return not (pos.x < 0 or pos.x > 7 or pos.y < 0 or pos.y > 7)
 
-
+# Move History (unfinished)
 class Move:
     def __init__(self, old, new):
         self.old = old
@@ -194,7 +210,7 @@ class Move:
     def __str__(self):
         return str(self.old) + " -> " + str(self.new)
 
-
+# For neatly storing coordinates as class objects
 class Vec2:
     def __init__(self, x, y):
         self.x = x
@@ -203,7 +219,7 @@ class Vec2:
     def __str__(self):
         return f"({self.x},{self.y})"
 
-
+# ####################################################Pieces############################################################
 class King:
     def __init__(self, team, color="white", has_moved=False):
         self.color = color
@@ -294,8 +310,9 @@ class Pawn:
                (((((move.new.x - move.old.x == -2 or move.new.x - move.old.x == -1) and self.team == 1) or
                   ((move.new.x - move.old.x ==  2 or move.new.x - move.old.x ==  1) and self.team == 2)) if self.has_moved == False else False)))
 
+########################################################################################################################
 
-# Example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
+# Movement input, example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
 def move_from_string(string):
     inputs = [int(num) for num in string.split(",")]
     cur_x, cur_y, new_x, new_y = inputs
