@@ -172,6 +172,8 @@ class ChessBoard:
         # vars
         cur = move.old
         new = move.new
+        piece = self.spaces[cur.x][cur.y]
+        dest = self.spaces[new.x][new.y]
 
         # Movement logic
 
@@ -179,21 +181,32 @@ class ChessBoard:
         if not self.in_board(cur) or not self.in_board(new):
             raise OutOfBounds()
 
-        piece = self.spaces[cur.x][cur.y]
+
         if not piece.team == player_team:
             raise ThatsNotUrFuckinTeam()
 
         if piece is None:
             raise NoPieceInSpace()
         else:
-            # Movement
+            # Movement - To-do: get rid of redundancy here
             if piece.can_move(move):
-                print("Moving...")
-                print(move)
-                setattr(self.spaces[cur.x][cur.y], 'has_moved', True)# So pawns can't do wacky stuff
-                # The actual movement
-                self.spaces[new.x][new.y] = piece
-                self.spaces[cur.x][cur.y] = None
+                if dest is None:
+                    print("Moving...")
+                    print(move)
+                    setattr(self.spaces[cur.x][cur.y], 'has_moved', True)  # So pawns can't do wacky stuff
+                    # The actual movement
+                    self.spaces[new.x][new.y] = piece
+                    self.spaces[cur.x][cur.y] = None
+                elif dest is not None and getattr(dest, "team") is player_team:
+                    print("You arleady have a piece there")
+                else:
+                    print("Moving...")
+                    print(move)
+                    print(str(getattr(dest, "name") + " taken"))
+                    setattr(self.spaces[cur.x][cur.y], 'has_moved', True)  # So pawns can't do wacky stuff
+                    # The actual movement
+                    self.spaces[new.x][new.y] = piece
+                    self.spaces[cur.x][cur.y] = None
             else:
                 raise IllegalMove()
 
