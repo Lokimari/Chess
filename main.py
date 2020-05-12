@@ -87,6 +87,8 @@ class ChessGame:
                 move = move_from_string(move)
                 self.board.move(move, self.player_turn)
                 self.next_player_turn()
+            except AttributeError:
+                print("Empty space selected.")
             except ValueError:
                 print("Invalid Input")
             except NoPieceInSpace:
@@ -106,8 +108,10 @@ class ChessGame:
         # self.board.spaces[2][3] = Bishop(team=1)
         # self.board.spaces[7][7] = Rook(team=1)
         # self.board.spaces[3][4] = Knight(team=1)
-        self.board.spaces[4][4] = King(team=1, color="yellow")
-        self.board.spaces[6][6] = King(team=2, color="magenta")
+        self.board.spaces[6][0] = Pawn(team=1, color="yellow")
+        self.board.spaces[1][0] = Pawn(team=2, color="magenta")
+        # self.board.spaces[4][4] = King(team=1, color="yellow")
+        # self.board.spaces[6][6] = King(team=2, color="magenta")
 
 
 class NoPieceInSpace(Exception):
@@ -171,6 +175,7 @@ class ChessBoard:
                 print(move)
                 self.spaces[new.x][new.y] = piece
                 self.spaces[cur.x][cur.y] = None
+                # To-do: Change piece's has_moved property to True
             else:
                 raise IllegalMove()
 
@@ -197,10 +202,11 @@ class Vec2:
 
 
 class King:
-    def __init__(self, team, color="white"):
+    def __init__(self, team, color="white", has_moved=False):
         self.color = color
         self.team = team
         self.name = "King"
+        self.has_moved = has_moved
 
     def __str__(self):
         return colored("K", self.color)
@@ -210,10 +216,11 @@ class King:
 
 
 class Queen:
-    def __init__(self, team, color="white"):
+    def __init__(self, team, color="white", has_moved=False):
         self.color = color
         self.team = team
         self.name = "Queen"
+        self.has_moved = has_moved
 
     def __str__(self):
         return colored("Q", self.color)
@@ -225,10 +232,11 @@ class Queen:
 
 
 class Bishop:
-    def __init__(self, team, color="white"):
+    def __init__(self, team, color="white", has_moved=False):
         self.color = color
         self.team = team
         self.name = "Bishop"
+        self.has_moved = has_moved
 
     def __str__(self):
         return colored("B", self.color)
@@ -239,10 +247,11 @@ class Bishop:
 
 
 class Rook:
-    def __init__(self, team, color="white"):
+    def __init__(self, team, color="white", has_moved=False):
         self.color = color
         self.team = team
         self.name = "Rook"
+        self.has_moved = has_moved
 
     def __str__(self):
         return colored("R", self.color)
@@ -252,10 +261,11 @@ class Rook:
 
 
 class Knight:
-    def __init__(self, team, color="white"):
+    def __init__(self, team, color="white", has_moved=False):
         self.color = color
         self.team = team
         self.name = "Knight"
+        self.has_moved = has_moved
 
     def __str__(self):
         return colored("H", self.color)
@@ -266,7 +276,20 @@ class Knight:
 
 
 class Pawn:
-    pass
+    def __init__(self, team, color="white", has_moved=False):
+        self.color = color
+        self.team = team
+        self.name = "Pawn"
+        self.has_moved = has_moved
+
+    def __str__(self):
+        return colored("P", self.color)
+
+    def can_move(self, move):
+        return (((((move.new.x - move.old.x == -1) and self.team == 1) or
+                  ((move.new.x - move.old.x == -1) and self.team == 2)) if self.has_moved == True else False) or
+               (((((move.new.x - move.old.x == -2 or move.new.x - move.old.x == -1) and self.team == 1) or
+                  ((move.new.x - move.old.x ==  2 or move.new.x - move.old.x ==  1) and self.team == 2)) if self.has_moved == False else False, self.has_moved)))
 
 
 # Example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
