@@ -87,6 +87,7 @@ class ChessGame:
                 move = move_from_string(move)
                 self.board.move(move, self.player_turn)
                 self.next_player_turn()
+
             except AttributeError:
                 print("Empty space selected.")
             except ValueError:
@@ -173,8 +174,10 @@ class ChessBoard:
             if piece.can_move(move):
                 print("Moving...")
                 print(move)
+                setattr(self.spaces[cur.x][cur.y], 'has_moved', True)
                 self.spaces[new.x][new.y] = piece
                 self.spaces[cur.x][cur.y] = None
+
                 # To-do: Change piece's has_moved property to True
             else:
                 raise IllegalMove()
@@ -289,7 +292,7 @@ class Pawn:
         return (((((move.new.x - move.old.x == -1) and self.team == 1) or
                   ((move.new.x - move.old.x == -1) and self.team == 2)) if self.has_moved == True else False) or
                (((((move.new.x - move.old.x == -2 or move.new.x - move.old.x == -1) and self.team == 1) or
-                  ((move.new.x - move.old.x ==  2 or move.new.x - move.old.x ==  1) and self.team == 2)) if self.has_moved == False else False, self.has_moved)))
+                  ((move.new.x - move.old.x ==  2 or move.new.x - move.old.x ==  1) and self.team == 2)) if self.has_moved == False else False)))
 
 
 # Example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
