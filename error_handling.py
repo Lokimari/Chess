@@ -17,3 +17,6 @@ class ThatsNotUrFuckinTeam(Exception):
 
 class FriendlySpaceOccupied(Exception):
     pass
+
+class Blockage(Exception):
+    pass

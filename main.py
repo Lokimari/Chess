@@ -1,5 +1,6 @@
 # To-do:
 # add piece blockage logic
+# castling
 # add Check and Checkmate logic
 # add fork notification
 

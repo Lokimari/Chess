@@ -34,7 +34,8 @@ class ChessGame:
                 print("Wrong team, dingus!")
             except error_handling.FriendlySpaceOccupied:
                 print("You already have a piece there")
-
+            except error_handling.Blockage:
+                print("Path blocked")
 
     # *Should* only trigger when a player has successfully moved
     def next_player_turn(self):
