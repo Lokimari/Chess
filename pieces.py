@@ -87,7 +87,7 @@ class Pawn:
     def can_move(self, move):
         if self.has_moved:
             return (((move.new.x - move.old.x == -1) and self.team == 1) or
-                    ((move.new.x - move.old.x ==  1) and self.team == 2))
+                    ((move.new.x - move.old.x == 1) and self.team == 2))
         else:
             return (((move.new.x - move.old.x == -2 or move.new.x - move.old.x == -1) and self.team == 1) or
-                    ((move.new.x - move.old.x ==  2 or move.new.x - move.old.x ==  1) and self.team == 2))
+                    ((move.new.x - move.old.x == 2 or move.new.x - move.old.x == 1) and self.team == 2))
