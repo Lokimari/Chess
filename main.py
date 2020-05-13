@@ -1,4 +1,6 @@
-# To-do: add Check and Checkmate logic
+# To-do:
+# add piece blockage logic
+# add Check and Checkmate logic
 # add fork notification
 
 # Coloration

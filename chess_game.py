@@ -1,6 +1,6 @@
 import error_handling
 from chess_board import ChessBoard
-import Pieces
+import pieces
 
 # Game Process
 class ChessGame:
@@ -44,27 +44,27 @@ class ChessGame:
     def setup_pieces(self):
         # Top team
         for num in range(0, 8):
-            self.board.spaces[1][num] = Pieces.Pawn(team=2, color="magenta")
-        self.board.spaces[0][0] = Pieces.Rook(team=2, color="magenta")
-        self.board.spaces[0][7] = Pieces.Rook(team=2, color="magenta")
-        self.board.spaces[0][1] = Pieces.Knight(team=2, color="magenta")
-        self.board.spaces[0][6] = Pieces.Knight(team=2, color="magenta")
-        self.board.spaces[0][2] = Pieces.Bishop(team=2, color="magenta")
-        self.board.spaces[0][5] = Pieces.Bishop(team=2, color="magenta")
-        self.board.spaces[0][3] = Pieces.King(team=2, color="magenta")
-        self.board.spaces[0][4] = Pieces.Queen(team=2, color="magenta")
+            self.board.spaces[1][num] = pieces.Pawn(team=2, color="magenta")
+        self.board.spaces[0][0] = pieces.Rook(team=2, color="magenta")
+        self.board.spaces[0][7] = pieces.Rook(team=2, color="magenta")
+        self.board.spaces[0][1] = pieces.Knight(team=2, color="magenta")
+        self.board.spaces[0][6] = pieces.Knight(team=2, color="magenta")
+        self.board.spaces[0][2] = pieces.Bishop(team=2, color="magenta")
+        self.board.spaces[0][5] = pieces.Bishop(team=2, color="magenta")
+        self.board.spaces[0][3] = pieces.King(team=2, color="magenta")
+        self.board.spaces[0][4] = pieces.Queen(team=2, color="magenta")
 
         # Bottom Team
         for num in range(0, 8):
-            self.board.spaces[6][num] = Pieces.Pawn(team=1, color="yellow")
-        self.board.spaces[7][0] = Pieces.Rook(team=1, color="yellow")
-        self.board.spaces[7][7] = Pieces.Rook(team=1, color="yellow")
-        self.board.spaces[7][1] = Pieces.Knight(team=1, color="yellow")
-        self.board.spaces[7][6] = Pieces.Knight(team=1, color="yellow")
-        self.board.spaces[7][2] = Pieces.Bishop(team=1, color="yellow")
-        self.board.spaces[7][5] = Pieces.Bishop(team=1, color="yellow")
-        self.board.spaces[7][4] = Pieces.King(team=1, color="yellow")
-        self.board.spaces[7][3] = Pieces.Queen(team=1, color="yellow")
+            self.board.spaces[6][num] = pieces.Pawn(team=1, color="yellow")
+        self.board.spaces[7][0] = pieces.Rook(team=1, color="yellow")
+        self.board.spaces[7][7] = pieces.Rook(team=1, color="yellow")
+        self.board.spaces[7][1] = pieces.Knight(team=1, color="yellow")
+        self.board.spaces[7][6] = pieces.Knight(team=1, color="yellow")
+        self.board.spaces[7][2] = pieces.Bishop(team=1, color="yellow")
+        self.board.spaces[7][5] = pieces.Bishop(team=1, color="yellow")
+        self.board.spaces[7][4] = pieces.King(team=1, color="yellow")
+        self.board.spaces[7][3] = pieces.Queen(team=1, color="yellow")
 
 
 # Movement input, example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
