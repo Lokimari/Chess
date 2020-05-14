@@ -35,17 +35,14 @@ class ChessBoard:
         cur = move.old
         new = move.new
 
-        try:
-            piece = self.spaces[cur.x][cur.y]
-            destination = self.spaces[new.x][new.y]
-        except IndexError:
-            print("Cannot create piece or destination")
-
         # Movement Logic
 
         # Preliminary error checks
         if not self.in_board(cur) or not self.in_board(new):
             raise error_handling.OutOfBounds()
+
+        piece = self.spaces[cur.x][cur.y]
+        destination = self.spaces[new.x][new.y]
 
         if not piece.team == player_team:
             raise error_handling.ThatsNotUrFuckinTeam()
@@ -102,17 +99,25 @@ class ChessBoard:
             if len(x_list) > len(y_list):
                 fill = len(x_list) - len(y_list)
                 for num in range(fill):
-                    y_list.append(0)
+                    y_list.append(move.new.x)
             else:
                 fill = len(y_list) - len(x_list)
                 for num in range(fill):
-                    x_list.append(0)
+                    x_list.append(move.new.y)
 
-        for i in range(len(x_list)):
-            print(f"({x_list[i]},{y_list[i]})")
-            if spaces[x_list[i]][y_list[i]] is not None:
-                return True
-        return False
+        if player_team == 1:
+            for i in range(len(x_list)):
+                print(f"({x_list[i]},{y_list[i]})")
+                if spaces[x_list[i]][y_list[i]] is not None:
+                    return True
+            return False
+
+        else:
+            for i in range(len(x_list)):
+                print(f"({x_list[-i]},{y_list[-i]})")
+                if spaces[x_list[-i]][y_list[-i]] is not None:
+                    return True
+            return False
 
     # Prelim bounds check
     def in_board(self, pos):
