@@ -1,6 +1,9 @@
 import error_handling
+from datatypes import Move
 
 # Game Environment
+
+
 class ChessBoard:
     def __init__(self):
         self.spaces = []
@@ -54,7 +57,7 @@ class ChessBoard:
             else:
                 raise error_handling.IllegalMove()
         else:
-            if not self.check_blockage(move, self.spaces, player_team):
+            if not self.check_blockage(move):
                 if piece.can_move(move):
                     if destination is None:
                         self.movement(move)
@@ -82,42 +85,14 @@ class ChessBoard:
         self.spaces[cur.x][cur.y] = None
         # End of Movement Logic
 
-    def check_blockage(self, move, spaces, player_team):
+    def check_blockage(self, move: Move):
+        spaces_inbetween = move.get_spaces_inbetween()
 
-        # Getting piece path intermediate spaces
-        if move.new.x < move.old.x:
-            x_list = [x for x in range(move.new.x, move.old.x)]
-        else:
-            x_list = [x for x in range(move.old.x, move.new.x)]
+        for space in spaces_inbetween:
+            if self.spaces[space.x][space.y] is not None:
+                return True
 
-        if move.new.y < move.old.y:
-            y_list = [y for y in range(move.new.y, move.old.y)]
-        else:
-            y_list = [y for y in range(move.old.y, move.new.y)]
-
-        if len(x_list) is not len(y_list):
-            if len(x_list) > len(y_list):
-                fill = len(x_list) - len(y_list)
-                for num in range(fill):
-                    y_list.append(move.new.x)
-            else:
-                fill = len(y_list) - len(x_list)
-                for num in range(fill):
-                    x_list.append(move.new.y)
-
-        if player_team == 1:
-            for i in range(len(x_list)):
-                print(f"({x_list[i]},{y_list[i]})")
-                if spaces[x_list[i]][y_list[i]] is not None:
-                    return True
-            return False
-
-        else:
-            for i in range(len(x_list)):
-                print(f"({x_list[-i]},{y_list[-i]})")
-                if spaces[x_list[-i]][y_list[-i]] is not None:
-                    return True
-            return False
+        return False
 
     # Prelim bounds check
     def in_board(self, pos):

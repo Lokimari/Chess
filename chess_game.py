@@ -1,6 +1,13 @@
 import error_handling
+from datatypes import Move, Vec2
 from chess_board import ChessBoard
 import pieces
+
+# Movement input, example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
+def move_from_string(string):
+    inputs = [int(num) for num in string.split(",")]
+    cur_x, cur_y, new_x, new_y = inputs
+    return Move(Vec2(cur_x, cur_y), Vec2(new_x, new_y))
 
 # Game Process
 class ChessGame:
@@ -66,28 +73,3 @@ class ChessGame:
         self.board.spaces[7][5] = pieces.Bishop(team=1, color="yellow")
         self.board.spaces[7][4] = pieces.King(team=1, color="yellow")
         self.board.spaces[7][3] = pieces.Queen(team=1, color="yellow")
-
-
-# Movement input, example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
-def move_from_string(string):
-    inputs = [int(num) for num in string.split(",")]
-    cur_x, cur_y, new_x, new_y = inputs
-    return Move(Vec2(cur_x, cur_y), Vec2(new_x, new_y))
-
-# Move History (unfinished)
-class Move:
-    def __init__(self, old, new):
-        self.old = old
-        self.new = new
-
-    def __str__(self):
-        return str(self.old) + " -> " + str(self.new)
-
-# For neatly storing coordinates as class objects
-class Vec2:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __str__(self):
-        return f"({self.x},{self.y})"
