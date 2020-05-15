@@ -44,7 +44,7 @@ class ChessGame:
             except error_handling.Blockage:
                 print("Path blocked")
 
-    # *Should* only trigger when a player has successfully moved
+    # After a successful turn, switch players
     def next_player_turn(self):
         self.player_turn = 2 if self.player_turn == 1 else 1
 

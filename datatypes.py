@@ -7,9 +7,11 @@ class Vec2:
         self.x = x
         self.y = y
 
+    # Pretty output
     def __str__(self):
         return f"({self.x},{self.y})"
 
+    # Operator Methods
     def __add__(self, v2):
         return Vec2(self.x + v2.x, self.y + v2.y)
 
@@ -19,13 +21,13 @@ class Vec2:
     def __mul__(self, num):
         return Vec2(self.x * num, self.y * num)
 
-    def round(self):
-        return Vec2(round(self.x), round(self.y))
-
+    # Other
     def length(self):
         return math.sqrt(self.x**2 + self.y**2)
 
-    # then div len by its own len
+    def round(self):
+        return Vec2(round(self.x), round(self.y))
+
     def normalize(self):
         return Vec2(self.x / self.length(), self.y / self.length())
 
@@ -38,7 +40,8 @@ class Move:
     def __str__(self):
         return str(self.old) + " -> " + str(self.new)
 
-    def get_spaces_inbetween(self) -> List[Vec2]:
+    # Shortening data to normalized vector, then getting intermediate spaces & orientation via this process.
+    def get_spaces_in_between(self) -> List[Vec2]:
         num_steps = math.gcd(self.new.x - self.old.x, self.new.y - self.new.y)
 
         if num_steps <= 1:

@@ -14,14 +14,11 @@
 # Coloration
 from colorama import init
 from chess_game import ChessGame
-from chess_game import Move
-from chess_game import Vec2
 init()  # Necessary for command prompt coloration
 
 
 def main():
-    # move = Move(Vec2(-5, 0), Vec2(-2, 3))
-    # print([str(x) for x in move.get_spaces_inbetween()])
+
     game = ChessGame()
     game.run()
 
