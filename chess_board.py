@@ -74,10 +74,29 @@ class ChessBoard:
                     elif getattr(destination, "team") is player_team:
                         raise error_handling.FriendlySpaceOccupied()
 
-                    # Enemy in space, currently not working
+                    # Enemy in space, display "enemy_piece_name taken" - Only working for Bottom Team captures currently
+                    elif getattr(destination, "team") is not player_team:
+
+                        # Pawn diagonal move take check
+                        if getattr(piece, "name") == "Pawn":
+                            if destination is not\
+                                (self.spaces[cur.x + 1][cur.y - 1] or
+                                 self.spaces[cur.x + 1][cur.y + 1] or
+                                 self.spaces[cur.x - 1][cur.y - 1] or
+                                 self.spaces[cur.x - 1][cur.y + 1]):
+                                raise error_handling.IllegalMove
+
+                            else:
+                                print(str(getattr(destination, "name") + " taken"))
+                                self.movement(move)
+
+                        else:
+                            # Non - Pawn moves
+                            print(str(getattr(destination, "name") + " taken"))
+                            self.movement(move)
+
                     else:
-                        print(str(getattr(destination, "name") + " taken"))
-                        self.movement(move)
+                        print("move else statement reached") # Placeholder statement, to fix piece taken logic
 
                 else:
                     # If piece may not reach destination
