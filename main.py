@@ -1,15 +1,7 @@
 # To-do:
-# add piece blockage logic
 # castling
 # add Check and Checkmate logic
 # add fork notification
-
-# y = mx + b
-# b = y - mx
-# intXs = range(minX + 1, maxX) = range(3,5) = [3,4]
-# ints = [Vec2(x, m*x + b) for x in intXs] = [Vec2(3,1*3+0), Vec2(4,1*4+0)] = [Vec2(3,3), Vec2(4,4)]
-# move = Move(Vec2(2,2), Vec2(5,5))
-# print(move.get_diagonal_spaces())
 
 # Coloration
 from colorama import init
