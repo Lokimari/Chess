@@ -27,8 +27,6 @@ class ChessGame:
                 self.next_player_turn()
 
             # Error Handling
-            except AttributeError:
-                print("Empty space selected")
             except ValueError:
                 print("Invalid Input")
             except error_handling.NoPieceInSpace:

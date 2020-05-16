@@ -1,7 +1,6 @@
 import error_handling
 from datatypes import Move
 
-
 # Game Environment
 class ChessBoard:
     def __init__(self):
@@ -46,6 +45,9 @@ class ChessBoard:
         piece = self.spaces[cur.x][cur.y]
         destination = self.spaces[new.x][new.y]
 
+        if piece is None:
+            raise error_handling.NoPieceInSpace()
+
         if not piece.team == player_team:
             raise error_handling.ThatsNotUrFuckinTeam()
 
@@ -65,7 +67,84 @@ class ChessBoard:
             if not self.check_blockage(move):
 
                 # Destination is not blocked, so proceed
-                if piece.name != "King":
+
+                # King Movement
+                if piece.name == "King":
+
+                    # Regular Kingly movement
+                    if piece.has_moved is True:
+                        if piece.can_move(move):
+
+                            # Destination is unoccupied
+                            if destination is None:
+                                self.movement(move)
+
+                            # Friendly piece check
+                            elif destination.team is player_team:
+                                raise error_handling.FriendlySpaceOccupied()
+
+                            # Enemy in space, display "enemy_piece_name taken" - Only works for bottom team currently
+                            elif destination.team is not player_team:
+                                # Non-pawn movement, capturing
+                                print(str(destination.name) + " taken")
+                                self.movement(move)
+
+                            else:
+                                print("The destination is occupied, but has no team? How did you get here?")
+
+                        else:
+                            error_handling.IllegalMove()
+
+                    else:
+
+                        if piece.can_move(move):
+
+                            # Destination is unoccupied
+                            if destination is None:
+                                self.movement(move)
+
+                            # Friendly piece check
+                            elif destination.team is player_team:
+                                raise error_handling.FriendlySpaceOccupied()
+
+                            # Enemy in space, display "enemy_piece_name taken" - Only works for bottom team currently
+                            elif destination.team is not player_team:
+                                # Non-pawn movement, capturing
+                                print(str(destination.name) + " taken")
+                                self.movement(move)
+
+                            else:
+                                print("The destination is occupied, but has no team? How did you get here?")
+
+                        else:
+
+                            # Castling
+                            if player_team == 1:
+                                if destination == self.spaces[7][6] and self.spaces[7][7].has_moved is False:
+                                    self.movement(move)
+                                    self.castle(7,7, 7,5)
+
+                                elif destination == self.spaces[7][2] and self.spaces[7][0].has_moved is False:
+                                    self.movement(move)
+                                    self.castle(7,0, 7,3)
+
+                                else:
+                                    error_handling.IllegalMove()
+
+                            else:
+
+                                if destination == self.spaces[0][5] and self.spaces[0][7].has_moved is False:
+                                    self.movement(move)
+                                    self.castle(0,7, 0,4)
+
+                                elif destination == self.spaces[0][1] and self.spaces[0][0].has_moved is False:
+                                    self.movement(move)
+                                    self.castle(0,0, 0,2)
+
+                                else:
+                                    error_handling.IllegalMove()
+
+                elif piece.name != "King":
 
                     if piece.can_move(move):
 
@@ -97,64 +176,13 @@ class ChessBoard:
                                 self.movement(move)
 
                         else:
-                            print("The destination is occupied, but has no team? How did you get here?")
+                            print("The destination is occupied, but has no team? How did you get here? (placeholder)")
 
                     else:
                         error_handling.IllegalMove()
 
-                # King Movement
-                elif piece.name == "King":
-
-                    if piece.has_moved is False:
-
-                        # Castling
-                        if player_team == 1 and destination is self.spaces[cur.x][cur.y + 2] and self.spaces[7][7].has_moved is False:
-                            self.movement(move)
-                            self.castle(move, 7,7, 7,5)
-
-                        elif player_team == 1 and destination is self.spaces[cur.x][cur.y - 2] and self.spaces[7][0].has_moved is False:
-                            # move rook
-                            self.movement(move)
-
-                        elif player_team == 2 and destination is self.spaces[cur.x][cur.y + 2] and self.spaces[0][7].has_moved is False:
-                            # move rook
-                            self.movement(move)
-
-                        elif player_team == 2 and destination is self.spaces[cur.x][cur.y - 2] and self.spaces[0][0].has_moved is False:
-                            # move rook
-                            self.movement(move)
-
-                        elif destination is self.spaces[cur.x][cur.y - 2] and self.spaces[0][0].has_moved is False:
-                            # move rook
-                            self.movement(move)
-
-                    # Regular Kingly movement
-                    else:
-
-                        if piece.can_move(move):
-
-                            # Destination is unoccupied
-                            if destination is None:
-                                self.movement(move)
-
-                            # Friendly piece check
-                            elif destination.team is player_team:
-                                raise error_handling.FriendlySpaceOccupied()
-
-                            # Enemy in space, display "enemy_piece_name taken" - Only works for bottom team currently
-                            elif destination.team is not player_team:
-                                # Non-pawn movement, capturing
-                                print(str(destination.name) + " taken")
-                                self.movement(move)
-
-                            else:
-                                print("The destination is occupied, but has no team? How did you get here?")
-
-                        else:
-                            error_handling.IllegalMove()
-
                 else:
-                    raise error_handling.NoPieceInSpace()
+                    error_handling.NoPieceInSpace()
 
             else:
                 # Destination is blocked, do not proceed
@@ -174,12 +202,11 @@ class ChessBoard:
         self.spaces[cur.x][cur.y] = None
         # End of Movement Logic
 
-    def castle(self, move, rook_cur_x, rook_cur_y, rook_new_x, rook_new_y):
+    def castle(self, rook_cur_x, rook_cur_y, rook_new_x, rook_new_y):
         print("Castling...")
         rook = self.spaces[rook_cur_x][rook_cur_y]
-
         rook.has_moved = True  # Rook has now moved
-        self.spaces[rook_new_x][rook_new_y] = rook  # Move
+        self.spaces[rook_new_x][rook_new_y] = rook
         self.spaces[rook_cur_x][rook_cur_y] = None
 
     # Using datatypes.py Move method to normalize move
