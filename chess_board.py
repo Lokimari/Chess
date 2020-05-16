@@ -123,8 +123,7 @@ class ChessBoard:
                             # King is moving towards the rook
                             new_king_pos = move.old + move.direction() * 2
                             new_rook_pos = new_king_pos - move.direction()
-
-
+                            self.castle(move, new_king_pos, new_rook_pos)
 
                 elif piece.name != "King":
 
@@ -185,12 +184,25 @@ class ChessBoard:
         self.spaces[cur.x][cur.y] = None
         # End of Movement Logic
 
-    def castle(self, rook_cur_x, rook_cur_y, rook_new_x, rook_new_y):
-        print("Castling...")
-        rook = self.spaces[rook_cur_x][rook_cur_y]
-        rook.has_moved = True  # Rook has now moved
-        self.spaces[rook_new_x][rook_new_y] = rook
-        self.spaces[rook_cur_x][rook_cur_y] = None
+    def castle(self, move, new_king_pos, new_rook_pos):
+
+        king_piece = self.spaces[move.old.x][move.old.y]
+        self.spaces[new_king_pos.x][new_king_pos.y] = king_piece
+        self.spaces[move.old.x][move.old.y] = None
+        king_piece.has_moved = True
+
+        if new_king_pos.y > move.old.y:
+            rook_y = 7
+            rook_piece = self.spaces[move.old.x][rook_y]
+            print("right castle")
+        else:
+            rook_y = 0
+            rook_piece = self.spaces[move.old.x][rook_y]
+            print("left castle")
+
+        self.spaces[new_rook_pos.x][new_rook_pos.y] = rook_piece
+        self.spaces[move.old.x][rook_y] = None
+        rook_piece.has_moved = True
 
     # Using datatypes.py Move method to normalize move
     def check_blockage(self, move: Move):

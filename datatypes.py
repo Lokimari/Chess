@@ -37,6 +37,9 @@ class Move:
         self.old = old
         self.new = new
 
+    def direction(self):
+        return (self.new - self.old).normalize().round()
+
     def __str__(self):
         return str(self.old) + " -> " + str(self.new)
 
