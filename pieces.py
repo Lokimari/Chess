@@ -56,7 +56,7 @@ class Rook:
         return colored("R", self.color)
 
     def can_move(self, move):
-        return move.new.x == move.old.x or move.new.y == move.old.y
+        return move.new.x != move.old.x and move.new.y == move.old.y
 
 
 class Knight:

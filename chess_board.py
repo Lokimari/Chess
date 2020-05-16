@@ -93,7 +93,7 @@ class ChessBoard:
                                 print("The destination is occupied, but has no team? How did you get here?")
 
                         else:
-                            error_handling.IllegalMove()
+                            raise error_handling.IllegalMove()
 
                     else:
 
@@ -119,33 +119,16 @@ class ChessBoard:
                         else:
 
                             # Castling
-                            if player_team == 1:
-                                if destination == self.spaces[7][6] and self.spaces[7][7].has_moved is False:
-                                    self.movement(move)
-                                    self.castle(7,7, 7,5)
+                            # Using Matt's normalization to simplify logic
+                            # King is moving towards the rook
+                            new_king_pos = move.old + move.direction() * 2
+                            new_rook_pos = new_king_pos - move.direction()
 
-                                elif destination == self.spaces[7][2] and self.spaces[7][0].has_moved is False:
-                                    self.movement(move)
-                                    self.castle(7,0, 7,3)
 
-                                else:
-                                    error_handling.IllegalMove()
-
-                            else:
-
-                                if destination == self.spaces[0][5] and self.spaces[0][7].has_moved is False:
-                                    self.movement(move)
-                                    self.castle(0,7, 0,4)
-
-                                elif destination == self.spaces[0][1] and self.spaces[0][0].has_moved is False:
-                                    self.movement(move)
-                                    self.castle(0,0, 0,2)
-
-                                else:
-                                    error_handling.IllegalMove()
 
                 elif piece.name != "King":
 
+                    print(piece.can_move(move))
                     if piece.can_move(move):
 
                         # Non - King / Knight pieces movement
@@ -179,10 +162,10 @@ class ChessBoard:
                             print("The destination is occupied, but has no team? How did you get here? (placeholder)")
 
                     else:
-                        error_handling.IllegalMove()
+                        raise error_handling.IllegalMove()
 
                 else:
-                    error_handling.NoPieceInSpace()
+                    raise error_handling.NoPieceInSpace()
 
             else:
                 # Destination is blocked, do not proceed
