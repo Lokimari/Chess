@@ -23,7 +23,7 @@ class ChessGame:
             move = input(f"Player {self.player_turn}, enter move: ")
             try:
                 move = move_from_string(move)
-                self.board.move(move, self.player_turn)
+                self.board.try_player_move(move, self.player_turn)
                 self.next_player_turn()
 
             # Error Handling
@@ -37,8 +37,6 @@ class ChessGame:
                 print("Out of Bounds!")
             except error_handling.ThatsNotUrFuckinTeam:
                 print("Wrong team, dingus!")
-            except error_handling.FriendlySpaceOccupied:
-                print("You already have a piece there")
             except error_handling.Blockage:
                 print("Path blocked")
 
@@ -50,7 +48,7 @@ class ChessGame:
     def setup_pieces(self):
         # Top team
         for num in range(0, 8):
-            self.board.spaces[1][num] = pieces.Pawn(team=2, color="magenta")
+            self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2, color="magenta"))
         self.board.spaces[0][0] = pieces.Rook(team=2, color="magenta")
         self.board.spaces[0][7] = pieces.Rook(team=2, color="magenta")
         # self.board.spaces[0][1] = pieces.Knight(team=2, color="magenta")
@@ -58,11 +56,11 @@ class ChessGame:
         # self.board.spaces[0][2] = pieces.Bishop(team=2, color="magenta")
         # self.board.spaces[0][5] = pieces.Bishop(team=2, color="magenta")
         self.board.spaces[0][3] = pieces.King(team=2, color="magenta")
-        self.board.spaces[0][4] = pieces.Queen(team=2, color="magenta")
+        # self.board.spaces[0][4] = pieces.Queen(team=2, color="magenta")
 
         # Bottom Team
         for num in range(0, 8):
-            self.board.spaces[6][num] = pieces.Pawn(team=1, color="yellow")
+            self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
         self.board.spaces[7][0] = pieces.Rook(team=1, color="yellow")
         self.board.spaces[7][7] = pieces.Rook(team=1, color="yellow")
         # self.board.spaces[7][1] = pieces.Knight(team=1, color="yellow")
@@ -70,4 +68,4 @@ class ChessGame:
         # self.board.spaces[7][2] = pieces.Bishop(team=1, color="yellow")
         # self.board.spaces[7][5] = pieces.Bishop(team=1, color="yellow")
         self.board.spaces[7][4] = pieces.King(team=1, color="yellow")
-        self.board.spaces[7][3] = pieces.Queen(team=1, color="yellow")
+        # self.board.spaces[7][3] = pieces.Queen(team=1, color="yellow")

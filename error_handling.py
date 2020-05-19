@@ -2,7 +2,6 @@
 class NoPieceInSpace(Exception):
     pass
 
-
 class IllegalMove(Exception):
     pass
 
@@ -14,9 +13,6 @@ class OutOfBounds(Exception):
 class ThatsNotUrFuckinTeam(Exception):
     pass
 
-
-class FriendlySpaceOccupied(Exception):
-    pass
 
 class Blockage(Exception):
     pass

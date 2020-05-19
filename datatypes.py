@@ -7,6 +7,9 @@ class Vec2:
         self.x = x
         self.y = y
 
+    def __eq__(self, v2):
+        return self.x == v2.x and self.y == v2.y
+
     # Pretty output
     def __str__(self):
         return f"({self.x},{self.y})"
@@ -36,6 +39,13 @@ class Move:
     def __init__(self, old, new):
         self.old = old
         self.new = new
+
+    def is_xy(self):
+        return (self.new.x != self.old.x and self.new.y == self.old.y or
+                self.new.x == self.old.x and self.new.y != self.old.y)
+
+    def is_diagonal(self):
+        return (self.old.x - self.old.y == self.new.x - self.new.y) or (self.old.x + self.old.y == self.new.x + self.new.y)
 
     def direction(self):
         return (self.new - self.old).normalize().round()
