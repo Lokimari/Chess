@@ -29,16 +29,9 @@ class ChessGame:
             # Error Handling
             except ValueError:
                 print("Invalid Input")
-            except error_handling.NoPieceInSpace:
-                print("No Piece in Space!")
-            except error_handling.IllegalMove:
-                print("Illegal move!")
-            except error_handling.OutOfBounds:
-                print("Out of Bounds!")
-            except error_handling.ThatsNotUrFuckinTeam:
-                print("Wrong team, dingus!")
-            except error_handling.Blockage:
-                print("Path blocked")
+
+            except error_handling.ChessException as chess_exception:
+                print(chess_exception)
 
     # After a successful turn, switch players
     def next_player_turn(self):

@@ -1,18 +1,29 @@
 # Error Handling
-class NoPieceInSpace(Exception):
-    pass
 
-class IllegalMove(Exception):
-    pass
+# Base Chess Exception
+class ChessException(Exception):
+    def __init__(self, message):
+        super(ChessException, self).__init__(message)
 
-
-class OutOfBounds(Exception):
-    pass
-
-
-class ThatsNotUrFuckinTeam(Exception):
-    pass
+# Other exceptions
+class IllegalMove(ChessException):
+    def __init__(self, message="That's an illegal move!"):
+        super(IllegalMove, self).__init__(message)
 
 
-class Blockage(Exception):
-    pass
+class OutOfBounds(ChessException):
+    def __init__(self, message="That move is out of bounds!"):
+        super(OutOfBounds, self).__init__(message)
+
+
+class ThatsNotUrFuckinTeam(ChessException):
+    def __init__(self, message="Wrong team selected!"):
+        super(ThatsNotUrFuckinTeam, self).__init__(message)
+
+class Blockage(ChessException):
+    def __init__(self, message="Path blocked!"):
+        super(Blockage, self).__init__(message)
+
+class NoPieceInSpace(ChessException):
+    def __init__(self, message="No piece in space"):
+        super (NoPieceInSpace, self).__init__(message)
