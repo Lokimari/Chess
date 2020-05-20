@@ -53,6 +53,7 @@ def can_castle(move, board):
         if move.new.x == move.old.x + 2:
             if board.spaces[7][7].has_moved is False:
                 return True
+
         elif move.new.x == move.old.x - 2:
             if board.spaces[0][7].has_moved is False:
                 return True
@@ -61,6 +62,7 @@ def can_castle(move, board):
         if move.new.x == move.old.x + 2:
             if board.spaces[7][0].has_moved is False:
                 return True
+
         elif move.new.x == move.old.x - 2:
             if board.spaces[0][0].has_moved is False:
                 return True

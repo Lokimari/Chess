@@ -19,7 +19,7 @@ class King:
         if moves.can_castle(move, board):
             board.castle(move)
         else:
-            board.movement(move)
+            board.move(move)
 
 class Queen:
     def __init__(self, team, color="white", has_moved=False):
@@ -35,7 +35,7 @@ class Queen:
         return moves.can_move_diagonally(move, board) or moves.can_move_xy(move, board)
 
     def do_move(self, move, board):
-        board.movement(move)
+        board.move(move)
 
 class Bishop:
     def __init__(self, team, color="white", has_moved=False):
@@ -51,7 +51,7 @@ class Bishop:
         return moves.can_move_diagonally(move, board)
 
     def do_move(self, move, board):
-        board.movement(move)
+        board.move(move)
 
 
 class Rook:
@@ -68,7 +68,7 @@ class Rook:
         return moves.can_move_xy(move, board)
 
     def do_move(self, move, board):
-        board.castle(move)
+        board.move(move)
 
 
 class Knight:
@@ -85,7 +85,7 @@ class Knight:
         return moves.can_horsey_jump(move, board)
 
     def do_move(self, move, board):
-        board.movement(move)
+        board.move(move)
 
 
 class Pawn:
@@ -104,4 +104,4 @@ class Pawn:
         return moves.can_pawn_move(self, move, board)
 
     def do_move(self, move, board):
-        board.movement(move)
+        board.move(move)

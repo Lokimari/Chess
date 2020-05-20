@@ -10,11 +10,9 @@ class IllegalMove(ChessException):
     def __init__(self, message="That's an illegal move!"):
         super(IllegalMove, self).__init__(message)
 
-
 class OutOfBounds(ChessException):
     def __init__(self, message="That move is out of bounds!"):
         super(OutOfBounds, self).__init__(message)
-
 
 class ThatsNotUrFuckinTeam(ChessException):
     def __init__(self, message="Wrong team selected!"):

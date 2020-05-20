@@ -1,6 +1,5 @@
 # To-do:
-# castling
-# add Check and Checkmate logic
+# add Check and Checkmate logic - team_capturable_spaces attribute somehow or equivalent
 # add fork notification
 
 # Coloration

@@ -10,7 +10,7 @@ class ChessBoard:
     # Create an 8x8 of None-type
     def build(self):
         for x in range(0, 8):
-            self.spaces.append([None for space in range(0, 8)])
+            self.spaces.append([None for x in range(0, 8)])
 
     # Board printing with variable x/y labels, x-axis will be changed to letters in the future
     def display(self):
@@ -32,6 +32,7 @@ class ChessBoard:
 
     # Piece movement
     def move(self, move):
+        print(move)
         piece = self.get_piece(move.old)
         self.spaces[move.new.y][move.new.x] = piece
         self.spaces[move.old.y][move.old.x] = None
