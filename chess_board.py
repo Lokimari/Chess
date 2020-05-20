@@ -1,16 +1,18 @@
 import error_handling
 from datatypes import Move, Vec2
+from typing import List
 
 # Game Environment
 class ChessBoard:
     def __init__(self):
-        self.spaces = []
-        self.build()
+        self.spaces = self.build()
 
     # Create an 8x8 of None-type
     def build(self):
+        spaces = []
         for x in range(0, 8):
-            self.spaces.append([None for x in range(0, 8)])
+            spaces.append([None for x in range(0, 8)])
+        return spaces
 
     # Board printing with variable x/y labels, x-axis will be changed to letters in the future
     def display(self):
@@ -32,7 +34,6 @@ class ChessBoard:
 
     # Piece movement
     def move(self, move):
-        print(move)
         piece = self.get_piece(move.old)
         self.spaces[move.new.y][move.new.x] = piece
         self.spaces[move.old.y][move.old.x] = None
@@ -86,6 +87,7 @@ class ChessBoard:
         # Pieces now have their own can_move methods, which references moves.py logic
         if piece.can_move(move, self):
             piece.do_move(move, self)
+            print(move)
         else:
             raise error_handling.IllegalMove()
 
@@ -121,6 +123,26 @@ class ChessBoard:
         # Not blocked
         return True
 
+    def will_king_check(self, move, player_team):
+        old_spaces = self.spaces
+        copied_spaces = self.copy_spaces()
+        self.spaces = copied_spaces
+
+        self.move(move)
+
+        is_safe = self.is_space_safe(move.new, player_team)
+        self.spaces = old_spaces
+
+        return not is_safe
+
+    def copy_spaces(self) -> List:
+        copied_spaces = self.build()
+        for y in range(len(copied_spaces)):
+            for x in range(len(copied_spaces)):
+                copied_spaces[x][y] = self.spaces[x][y]
+        return copied_spaces
+
+    # Checking if King is moving out of check (Does not account for taking a spot to remove check)
     def is_space_safe(self, pos: Vec2, for_team: int) -> bool:
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):

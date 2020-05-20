@@ -38,7 +38,9 @@ def can_horsey_jump(move, board):
 
 # King Movement
 def can_kingly_movement(move, board: ChessBoard):
-    return (abs(move.new.y - move.old.y) <= 1 and abs(move.new.x - move.old.x) <= 1) and board.is_dest_empty_or_enemy(move) and board.is_space_safe(move.new, board.get_piece(move.old).team)
+    return ((abs(move.new.y - move.old.y) <= 1 and abs(move.new.x - move.old.x) <= 1)
+            and board.is_dest_empty_or_enemy(move)
+            and not board.will_king_check(move, board.get_piece(move.old).team))
 
 def can_castle(move, board):
 
