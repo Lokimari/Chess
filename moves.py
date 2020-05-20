@@ -1,11 +1,10 @@
+from chess_board import ChessBoard
+from datatypes import Vec2
 # Piece move logic
 
 # Pawn
 def can_step_forward(piece, move, board):
     is_normal_move = move.new == (move.old + piece.forward)
-    print(is_normal_move)
-    print(move.old + piece.forward)
-    print(move)
     is_double_step = not piece.has_moved and move.new == move.old + piece.forward * 2
     is_legal_move = is_normal_move or is_double_step
 
@@ -38,8 +37,8 @@ def can_horsey_jump(move, board):
     return can_horse_jump and board.is_dest_empty_or_enemy(move)
 
 # King Movement
-def can_kingly_movement(move, board):
-    return (abs(move.new.y - move.old.y) <= 1 and abs(move.new.x - move.old.x) <= 1) and board.is_dest_empty_or_enemy(move)
+def can_kingly_movement(move, board: ChessBoard):
+    return (abs(move.new.y - move.old.y) <= 1 and abs(move.new.x - move.old.x) <= 1) and board.is_dest_empty_or_enemy(move) and board.is_space_safe(move.new, board.get_piece(move.old).team)
 
 def can_castle(move, board):
 
@@ -50,21 +49,21 @@ def can_castle(move, board):
         return False
 
     if board.get_piece(move.old).team == 1:
-        if move.new.x == move.old.x + 2:
-            if board.spaces[7][7].has_moved is False:
+        if move.new.x == move.old.x + 2 and move.new.y == move.old.y:
+            if board.get_piece(Vec2(7, 7)).has_moved is False:
                 return True
 
-        elif move.new.x == move.old.x - 2:
-            if board.spaces[0][7].has_moved is False:
+        elif move.new.x == move.old.x - 2 and move.new.y == move.old.y:
+            if board.get_piece(Vec2(7, 0)).has_moved is False:
                 return True
 
     else:
-        if move.new.x == move.old.x + 2:
-            if board.spaces[7][0].has_moved is False:
+        if move.new.x == move.old.x + 2 and move.new.y == move.old.y:
+            if board.get_piece(Vec2(7, 0)).has_moved is False:
                 return True
 
-        elif move.new.x == move.old.x - 2:
-            if board.spaces[0][0].has_moved is False:
+        elif move.new.x == move.old.x - 2 and move.new.y == move.old.y:
+            if board.get_piece(Vec2(0, 0)).has_moved is False:
                 return True
 
     return False

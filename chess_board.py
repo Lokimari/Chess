@@ -89,6 +89,7 @@ class ChessBoard:
         else:
             raise error_handling.IllegalMove()
 
+
     # Castling
     def castle(self, move):
         # Utilizing normalization to determine King or Queen side castling
@@ -118,4 +119,13 @@ class ChessBoard:
                 return False
 
         # Not blocked
+        return True
+
+    def is_space_safe(self, pos: Vec2, for_team: int) -> bool:
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                piece = self.get_piece(Vec2(x, y))
+                if piece and piece.team != for_team:
+                    if piece.can_move(Move(Vec2(x, y), pos), self):
+                        return False
         return True
