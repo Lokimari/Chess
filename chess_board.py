@@ -61,6 +61,7 @@ class ChessBoard:
     # Used in board initialization
     def set_piece(self, pos, piece):
         self.spaces[pos.y][pos.x] = piece
+        return piece
 
     # Bounds check
     def in_board(self, pos):
