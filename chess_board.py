@@ -161,14 +161,14 @@ class ChessBoard:
                 if self.get_piece(Vec2(x, y)) == piece_to_find:
                     return Vec2(x, y)
 
-    # King in check, checking if he may move out of it without killing
+    # King in check, checking if he may move out of it, it seems it lets the king murder? idfk lol
     def can_king_move_outta_the_way(self, king, king_pos, player_team):
         king_move_list = []
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):
                 if king.can_move((Move(king_pos, Vec2(x, y))), self):
                     king_move_list.append(Vec2(x, y))
-        # [pos] for pos in king.can_move(Move(king_pos, ))]
+
         print("King moves list")
         for pos in king_move_list:
             print(Vec2(pos.x, pos.y))
@@ -189,7 +189,11 @@ class ChessBoard:
             piece_pos = self.get_piece_pos(piece)
             for pos in king_move_list:
                 if piece.can_move((Move(Vec2(piece_pos.x, piece_pos.y), Vec2(pos.x, pos.y))), self):
-                  print("ee")
+                    king_move_list.remove(pos)
+
+        if len(king_move_list) == 0:
+            return False
+        return True
 
     # Intended for can_king_move_outta_the_way
     def get_piece_pos(self, piece) -> Vec2:

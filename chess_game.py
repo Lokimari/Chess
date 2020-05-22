@@ -52,8 +52,8 @@ class ChessGame:
         # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(4, 4), pieces.Queen(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(6, 6), pieces.Queen(team=2, color="magenta"))
+        self.board.set_piece(Vec2(4, 4), pieces.Queen(team=2, color="magenta"))
+        self.board.set_piece(Vec2(6, 6), pieces.Queen(team=2, color="magenta"))
 
         # Bottom Team
         # for num in range(0, 8):
@@ -84,5 +84,8 @@ class ChessGame:
 
         # Can the King move to free himself?
         print(self.board.can_king_move_outta_the_way(self.highness, king_pos, self.highness.team))
+
+        if not (self.board.is_space_safe(king_pos, self.highness.team)) and not (self.board.can_king_move_outta_the_way(self.highness, king_pos, self.highness.team)):
+            print("almost checkmate?")
 
 
