@@ -149,6 +149,51 @@ class ChessBoard:
             for x in range(len(self.spaces)):
                 piece = self.get_piece(Vec2(x, y))
                 if piece and piece.team != for_team:
+                    # print(x, y) # it's only getting the first piece that can capture, we need all
                     if piece.can_move(Move(Vec2(x, y), pos), self):
                         return False
         return True
+
+    # Find a piece
+    def get_piece_space(self, piece_to_find) -> Vec2:
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                if self.get_piece(Vec2(x, y)) == piece_to_find:
+                    return Vec2(x, y)
+
+    # King in check, checking if he may move out of it without killing
+    def can_king_move_outta_the_way(self, king, king_pos, player_team):
+        king_move_list = []
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                if king.can_move((Move(king_pos, Vec2(x, y))), self):
+                    king_move_list.append(Vec2(x, y))
+        # [pos] for pos in king.can_move(Move(king_pos, ))]
+        print("King moves list")
+        for pos in king_move_list:
+            print(Vec2(pos.x, pos.y))
+
+        # Attacker stuff
+        hit_list = []
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                attacker = self.get_piece(Vec2(x, y))
+                if attacker is not None and attacker.team != player_team:
+                    hit_list.append(attacker)
+
+        print("Attackers")
+        for piece in hit_list:
+            print(piece.name)
+
+        for piece in hit_list:
+            piece_pos = self.get_piece_pos(piece)
+            for pos in king_move_list:
+                if piece.can_move((Move(Vec2(piece_pos.x, piece_pos.y), Vec2(pos.x, pos.y))), self):
+                  print("ee")
+
+    # Intended for can_king_move_outta_the_way
+    def get_piece_pos(self, piece) -> Vec2:
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                if self.spaces[x][y] == piece:
+                    return Vec2(x, y)

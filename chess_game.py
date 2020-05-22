@@ -13,9 +13,9 @@ def move_from_string(string):
 class ChessGame:
     def __init__(self):
         self.board = ChessBoard()
+        self.highness = None
         self.setup_pieces()
         self.player_turn = 1
-        self.highness = None
 
     def run(self):
         # Game Process Logic
@@ -52,8 +52,8 @@ class ChessGame:
         # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
-        self.board.set_piece(Vec2(4, 4), pieces.Queen(team=2, color="magenta"))
-        self.board.set_piece(Vec2(6, 6), pieces.Queen(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(4, 4), pieces.Queen(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(6, 6), pieces.Queen(team=2, color="magenta"))
 
         # Bottom Team
         # for num in range(0, 8):
@@ -65,12 +65,24 @@ class ChessGame:
         # self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
         # self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
         self.highness = self.board.set_piece(Vec2(5, 5), pieces.King(team=1, color="yellow"))
+
         # self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
 
     # 1: In check
+    # 1.1: is_space_safe is False
     # 2: Can't move out of check
+    # 2.1: make can_king_move func that loops through all board spaces, checks if king can move to it (safe place :))
     # 3: Can't murder check
-    # 4: Friendly can't jump in way
-    # 5: Friendly can't murder check
+    # 3.1: Acquire Attackers, get all friendlies(king too) - determine if they can attack the Attackers and also uncheck
+    # 3.2: ideas: implement get_all_pieces_on_team or have one big ass for loop
+    # 4: Friendly can't jump in way :[ - fuck 4 for now
     def is_checkmate(self) -> bool:
-        return True
+
+        # Is King in check?
+        king_pos = (self.board.get_piece_space(self.highness))
+        print(self.board.is_space_safe(king_pos, self.highness.team))
+
+        # Can the King move to free himself?
+        print(self.board.can_king_move_outta_the_way(self.highness, king_pos, self.highness.team))
+
+
