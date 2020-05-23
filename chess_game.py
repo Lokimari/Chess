@@ -53,9 +53,9 @@ class ChessGame:
         # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
-        self.board.set_piece(Vec2(4, 4), pieces.Queen(team=2, color="magenta")) # pieces are in test positions
+        self.board.set_piece(Vec2(7, 3), pieces.Queen(team=2, color="magenta")) # pieces are in test positions
         self.board.set_piece(Vec2(7, 2), pieces.Rook(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(2, 4), pieces.Rook(team=2, color="magenta")) # having this line, but not the next bricks everything
+        self.board.set_piece(Vec2(1, 4), pieces.Rook(team=2, color="magenta")) # having this line, but not the next bricks everything
         #self.board.set_piece(Vec2(7, 4), pieces.Rook(team=2, color="magenta"))
 
         # Bottom Team
@@ -82,12 +82,32 @@ class ChessGame:
     # 4: Friendly can't jump in way :[ - fuck 4 for now
     def is_checkmate(self) -> bool:
 
-        # Is King in check?
         king_pos = (self.board.get_piece_space(self.highness))
-        print(self.board.is_space_safe(king_pos, self.highness.team))
+
+        # Is King in check?
+        king_is_in_danger = not self.board.is_space_safe(king_pos, self.highness.team)
 
         # Can the King move to free himself?
-        print(self.board.can_piece_move(self.highness, king_pos))
+        king_cannot_move = not self.board.can_piece_move(self.highness, king_pos)
 
-        # if not (self.board.is_space_safe(king_pos, self.highness.team)) and not (self.board.can_king_move_outta_the_way(self.highness, king_pos, self.highness.team)):
-        #     print("almost checkmate?")
+        # See if a piece may free the King
+        king_cannot_be_saved = not self.can_friendlies_uncheck_king()
+
+        return king_is_in_danger and king_cannot_move and king_cannot_be_saved
+
+    def can_friendlies_uncheck_king(self) -> bool:
+        friendlies = self.board.get_all_pieces_on_team(self.highness.team)
+
+        checkers = self.board.get_all_pieces_checking_king(self.highness.team, self.board.get_piece_space(self.highness))
+
+        if len(checkers) > 1:
+            return False
+        elif len(checkers) == 0:
+            return True
+        else:
+            checker = checkers[0]
+            for friendly in friendlies:
+                move = Move(self.board.get_piece_pos(friendly), self.board.get_piece_pos(checker))
+                if friendly.can_move(move, self.board):
+                    print("Check may be cleared")
+                    return True

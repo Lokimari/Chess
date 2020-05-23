@@ -2,6 +2,7 @@ import error_handling
 from datatypes import Move, Vec2
 from typing import List
 
+
 # Game Environment
 class ChessBoard:
     def __init__(self):
@@ -92,7 +93,6 @@ class ChessBoard:
         else:
             raise error_handling.IllegalMove()
 
-
     # Castling
     def castle(self, move):
         # Utilizing normalization to determine King or Queen side castling
@@ -176,20 +176,21 @@ class ChessBoard:
                 if self.spaces[x][y] == piece:
                     return Vec2(x, y)
 
-    # Attacker stuff
-    # hit_list = []
-    # for y in range(len(self.spaces)):
-    #     for x in range(len(self.spaces)):
-    #         attacker = self.get_piece(Vec2(x, y))
-    #         if attacker is not None and attacker.team != player_team:
-    #             hit_list.append(attacker)
-    #
-    # print("Attackers")
-    # for piece in hit_list:
-    #     print(piece.name)
-    #
-    # for piece in hit_list:
-    #     piece_pos = self.get_piece_pos(piece)
-    #     for pos in king_move_list:
-    #         if piece.can_move((Move(Vec2(piece_pos.x, piece_pos.y), Vec2(pos.x, pos.y))), self):
-    #             king_move_list.remove(pos)
+    def get_all_pieces_on_team(self, player_team):
+        friendly_list = []
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                attacker = self.get_piece(Vec2(x, y))
+                if attacker is not None and attacker.team == player_team:
+                    friendly_list.append(attacker)
+        return friendly_list
+
+    def get_all_pieces_checking_king(self, player_team, king_pos):
+        hit_list = []
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                attacker = self.get_piece(Vec2(x, y))
+                if attacker is not None and attacker.team != player_team:
+                    if attacker.can_move((Move(Vec2(x, y), king_pos)), self):
+                        hit_list.append(attacker)
+        return hit_list
