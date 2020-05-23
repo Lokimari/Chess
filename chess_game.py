@@ -46,25 +46,29 @@ class ChessGame:
         # for num in range(0, 1):
         #     self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2, color="magenta"))
         # self.board.set_piece(Vec2(0, 0), pieces.Rook(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(5, 0), pieces.Rook(team=2, color="magenta")) # test rook
         # self.board.set_piece(Vec2(7, 0), pieces.Rook(team=2, color="magenta"))
         # self.board.set_piece(Vec2(1, 0), pieces.Knight(team=2, color="magenta"))
         # self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2, color="magenta"))
         # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
-        self.board.set_piece(Vec2(4, 4), pieces.Queen(team=2, color="magenta"))
-        self.board.set_piece(Vec2(6, 6), pieces.Queen(team=2, color="magenta"))
+        self.board.set_piece(Vec2(4, 4), pieces.Queen(team=2, color="magenta")) # pieces are in test positions
+        self.board.set_piece(Vec2(7, 2), pieces.Rook(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(2, 4), pieces.Rook(team=2, color="magenta")) # having this line, but not the next bricks everything
+        #self.board.set_piece(Vec2(7, 4), pieces.Rook(team=2, color="magenta"))
 
         # Bottom Team
         # for num in range(0, 8):
         #     self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
         # self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1, color="yellow"))
+        self.board.set_piece(Vec2(6, 1), pieces.Knight(team=1, color="yellow")) # test Knight
         # self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
         # self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
         # self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
         # self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
         # self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
-        self.highness = self.board.set_piece(Vec2(5, 5), pieces.King(team=1, color="yellow"))
+        self.highness = self.board.set_piece(Vec2(3, 3), pieces.King(team=1, color="yellow"))
 
         # self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
 
@@ -83,9 +87,7 @@ class ChessGame:
         print(self.board.is_space_safe(king_pos, self.highness.team))
 
         # Can the King move to free himself?
-        print(self.board.can_king_move_outta_the_way(self.highness, king_pos, self.highness.team))
+        print(self.board.can_piece_move(self.highness, king_pos))
 
-        if not (self.board.is_space_safe(king_pos, self.highness.team)) and not (self.board.can_king_move_outta_the_way(self.highness, king_pos, self.highness.team)):
-            print("almost checkmate?")
-
-
+        # if not (self.board.is_space_safe(king_pos, self.highness.team)) and not (self.board.can_king_move_outta_the_way(self.highness, king_pos, self.highness.team)):
+        #     print("almost checkmate?")

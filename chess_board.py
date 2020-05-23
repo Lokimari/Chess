@@ -161,43 +161,35 @@ class ChessBoard:
                 if self.get_piece(Vec2(x, y)) == piece_to_find:
                     return Vec2(x, y)
 
-    # King in check, checking if he may move out of it, it seems it lets the king murder? idfk lol
-    def can_king_move_outta_the_way(self, king, king_pos, player_team):
-        king_move_list = []
+    # Seeing if a piece can move / avoid itself being captured / check for checkmate
+    def can_piece_move(self, piece, king_pos):
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):
-                if king.can_move((Move(king_pos, Vec2(x, y))), self):
-                    king_move_list.append(Vec2(x, y))
+                if piece.can_move((Move(king_pos, Vec2(x, y))), self):
+                    return True
+        return False
 
-        print("King moves list")
-        for pos in king_move_list:
-            print(Vec2(pos.x, pos.y))
-
-        # Attacker stuff
-        hit_list = []
-        for y in range(len(self.spaces)):
-            for x in range(len(self.spaces)):
-                attacker = self.get_piece(Vec2(x, y))
-                if attacker is not None and attacker.team != player_team:
-                    hit_list.append(attacker)
-
-        print("Attackers")
-        for piece in hit_list:
-            print(piece.name)
-
-        for piece in hit_list:
-            piece_pos = self.get_piece_pos(piece)
-            for pos in king_move_list:
-                if piece.can_move((Move(Vec2(piece_pos.x, piece_pos.y), Vec2(pos.x, pos.y))), self):
-                    king_move_list.remove(pos)
-
-        if len(king_move_list) == 0:
-            return False
-        return True
-
-    # Intended for can_king_move_outta_the_way
+    # Gets a piece's position
     def get_piece_pos(self, piece) -> Vec2:
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):
                 if self.spaces[x][y] == piece:
                     return Vec2(x, y)
+
+    # Attacker stuff
+    # hit_list = []
+    # for y in range(len(self.spaces)):
+    #     for x in range(len(self.spaces)):
+    #         attacker = self.get_piece(Vec2(x, y))
+    #         if attacker is not None and attacker.team != player_team:
+    #             hit_list.append(attacker)
+    #
+    # print("Attackers")
+    # for piece in hit_list:
+    #     print(piece.name)
+    #
+    # for piece in hit_list:
+    #     piece_pos = self.get_piece_pos(piece)
+    #     for pos in king_move_list:
+    #         if piece.can_move((Move(Vec2(piece_pos.x, piece_pos.y), Vec2(pos.x, pos.y))), self):
+    #             king_move_list.remove(pos)
