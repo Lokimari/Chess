@@ -162,12 +162,20 @@ class ChessBoard:
                     return Vec2(x, y)
 
     # Seeing if a piece can move / avoid itself being captured / check for checkmate
-    def can_piece_move(self, piece, king_pos):
+    def can_piece_move(self, piece, piece_pos):
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):
-                if piece.can_move((Move(king_pos, Vec2(x, y))), self):
+                if piece.can_move((Move(piece_pos, Vec2(x, y))), self):
                     return True
         return False
+
+    def get_piece_path(self, piece, piece_pos):
+        piece_path = []
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                if piece.can_move((Move(piece_pos, Vec2(x, y))), self):
+                    piece_path.append(Vec2(x, y))
+        return piece_path
 
     # Gets a piece's position
     def get_piece_pos(self, piece) -> Vec2:

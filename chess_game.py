@@ -107,7 +107,15 @@ class ChessGame:
         else:
             checker = checkers[0]
             for friendly in friendlies:
-                move = Move(self.board.get_piece_pos(friendly), self.board.get_piece_pos(checker))
-                if friendly.can_move(move, self.board):
-                    print("Check may be cleared")
+                move_kill = Move(self.board.get_piece_pos(friendly), self.board.get_piece_pos(checker))
+                if friendly.can_move(move_kill, self.board) and self.can_friendlies_block_checker(friendly, checker):
+                    print("Checker may be captures")
                     return True
+
+    def can_friendlies_block_checker(self, friendly, checker) -> bool:
+        checker_pos = self.board.get_piece_pos(checker)
+        checker_path = self.board.get_piece_path(checker, checker_pos)
+        print(checker_path)
+        return True  # placeholder
+
+# To-do: implement friendly jumping into attacker path to save king (only applicable if there is 1 attacker)

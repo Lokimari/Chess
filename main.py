@@ -1,5 +1,5 @@
 # To-do:
-# add Check and Checkmate logic - team_capturable_spaces attribute somehow or equivalent
+# add Check and Checkmate logic - allow friendlies to jump in the way of attacker to save king
 # add fork notification
 
 # Coloration
