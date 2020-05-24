@@ -55,10 +55,15 @@ class Move:
 
     # Shortening data to normalized vector, then getting intermediate spaces & orientation via this process.
     def get_spaces_in_between(self) -> List[Vec2]:
-        num_steps = math.gcd(self.new.x - self.old.x, self.new.y - self.new.y)
+        if not self.is_diagonal() and not self.is_xy():
+            return []
+        print("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")
+        num_steps = math.gcd(abs(self.new.x - self.old.x), abs(self.new.y - self.old.y))
+        print(num_steps)
 
         if num_steps <= 1:
             return []
         else:
             direction = (self.new - self.old).normalize().round()
+            print(f"{direction}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
             return [self.old + direction * step for step in range(1, num_steps)]

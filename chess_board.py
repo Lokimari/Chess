@@ -41,6 +41,7 @@ class ChessBoard:
         piece.has_moved = True
 
     # General piece movement check
+    #######################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
     def is_dest_empty_or_enemy(self, move):
         return self.is_unoccupied(move.new) or self.get_piece(move.old).team != self.get_piece(move.new).team
 
@@ -114,6 +115,7 @@ class ChessBoard:
     def is_path_clear(self, move: Move):
         # Using move's normalization to determine direction ((-1 to 1), (-1 to 1))
         spaces_in_between = move.get_spaces_in_between()
+        print([str(x) for x in spaces_in_between])
 
         # Checking intermediate spaces via normalized Vec2
         for space in spaces_in_between:
@@ -169,19 +171,19 @@ class ChessBoard:
                     return True
         return False
 
-    def get_piece_path(self, piece, piece_pos):
-        piece_path = []
-        for y in range(len(self.spaces)):
-            for x in range(len(self.spaces)):
-                if piece.can_move((Move(piece_pos, Vec2(x, y))), self):
-                    piece_path.append(Vec2(x, y))
-        return piece_path
+    # def get_piece_path(self, piece, piece_pos):
+    #     piece_path = []
+    #     for y in range(len(self.spaces)):
+    #         for x in range(len(self.spaces)):
+    #             if piece.can_move((Move(piece_pos, Vec2(x, y))), self):
+    #                 piece_path.append(Vec2(x, y))
+    #     return piece_path
 
     # Gets a piece's position
     def get_piece_pos(self, piece) -> Vec2:
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):
-                if self.spaces[x][y] == piece:
+                if self.spaces[y][x] == piece:
                     return Vec2(x, y)
 
     def get_all_pieces_on_team(self, player_team):
@@ -193,7 +195,8 @@ class ChessBoard:
                     friendly_list.append(attacker)
         return friendly_list
 
-    def get_all_pieces_checking_king(self, player_team, king_pos):
+    # Return list of pieces checking King
+    def get_all_pieces_checking_king(self, player_team, king_pos) -> List:
         hit_list = []
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):
@@ -202,3 +205,12 @@ class ChessBoard:
                     if attacker.can_move((Move(Vec2(x, y), king_pos)), self):
                         hit_list.append(attacker)
         return hit_list
+
+    # Get List of Vec2 of all board positions an enemy can go to
+    def get_attacker_spaces_for_checkmate(self, attacker_piece, attacker_pos) -> List[Vec2]:
+        move_list = []
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                if attacker_piece.can_move(Move(attacker_pos, Vec2(x, y)), self):
+                    move_list.append(Vec2(x, y))
+        return move_list
