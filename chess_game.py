@@ -14,6 +14,8 @@ class ChessGame:
     def __init__(self):
         self.board = ChessBoard()
         self.highness = None
+        self.p1_king = None
+        self.p2_king = None
         self.setup_pieces()
         self.player_turn = 1
 
@@ -52,7 +54,7 @@ class ChessGame:
         # self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2, color="magenta"))
         # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
         # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
+        self.p2_king = self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
         self.board.set_piece(Vec2(7, 2), pieces.Queen(team=2, color="magenta")) # pieces are in test positions
         self.board.set_piece(Vec2(7, 3), pieces.Rook(team=2, color="magenta"))
         self.board.set_piece(Vec2(1, 4), pieces.Rook(team=2, color="magenta")) # having this line, but not the next bricks everything
@@ -62,13 +64,13 @@ class ChessGame:
         # for num in range(0, 8):
         #     self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
         # self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1, color="yellow"))
-        self.board.set_piece(Vec2(5, 1), pieces.Knight(team=1, color="yellow")) # test Knight
+        #self.p1_king = self.board.set_piece(Vec2(5, 1), pieces.Knight(team=1, color="yellow")) # test Knight
         # self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
         # self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
         # self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
         # self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
         # self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
-        self.highness = self.board.set_piece(Vec2(3, 3), pieces.King(team=1, color="yellow"))
+        self.p1_king = self.board.set_piece(Vec2(3, 3), pieces.King(team=1, color="yellow"))
 
         # self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
 
@@ -82,7 +84,8 @@ class ChessGame:
     # 4: Friendly can't jump in way
     def is_checkmate(self) -> bool:
 
-        king_pos = (self.board.get_piece_space(self.highness))
+        self.highness = self.p1_king if self.player_turn == 1 else self.p2_king
+        king_pos = (self.board.get_piece_pos(self.highness))
 
         # Is King in check?
         king_is_in_danger = not self.board.is_space_safe(king_pos, self.highness.team)
@@ -93,10 +96,15 @@ class ChessGame:
         # See if a piece may free the King
         king_cannot_be_saved = not self.can_friendlies_uncheck_king()
 
+        if king_is_in_danger:
+            print("Check")
+        if king_is_in_danger and king_cannot_move and not king_cannot_be_saved:
+            print("Your King requires help from a friendly piece")
         return king_is_in_danger and king_cannot_move and king_cannot_be_saved
 
     # Murder checker
     def can_friendlies_uncheck_king(self) -> bool:
+
         friendlies = self.board.get_all_pieces_on_team(self.highness.team)
 
         checkers = self.board.get_all_pieces_checking_king(self.highness.team, self.board.get_piece_space(self.highness))
@@ -111,25 +119,25 @@ class ChessGame:
                 for friendly in friendlies:
                     move_kill = Move(self.board.get_piece_pos(friendly), self.board.get_piece_pos(checker))
                     if friendly.can_move(move_kill, self.board) or self.can_friendlies_block_checker(friendlies, checker):
-                        print("Checker may be captured or blocked")
+                        print(f"Checker may be captured or blocked")
+                        if friendly.can_move(move_kill, self.board) and self.can_friendlies_block_checker(friendlies, checker):
+                            print(f"Checker may be captured via {move_kill}, and blocked via {self.can_friendlies_block_checker(friendlies, checker)}")
                         return True
             else:
                 return False
 
     def can_friendlies_block_checker(self, friendlies, checker) -> bool:
-        print("EEEEEEEEEEEEEEEEEEEEEEEEEEE")
         checker_pos = self.board.get_piece_pos(checker)
         checking_path = self.board.get_attacker_spaces_for_checkmate(checker, checker_pos)
-        # print([str(pos) for pos in checking_path])
         if len(checking_path) > 0:
             for friendly in friendlies:
                 friendly_pos = self.board.get_piece_pos(friendly)
                 for pos in checking_path:
                     move = Move(friendly_pos, pos)
                     if friendly.can_move(move, self.board):
-                        if self.board.will_king_check(move, self.highness.team):
-                            print("test!!!!!!!!!!!!!!!!!!!!!!")
+                        if not self.board.will_king_check(move, self.highness.team, self.board.get_piece_pos(self.highness)):
+                            print(f"Checker may be blocked via {move}")
                             return True
         else:
-            print("no check path (Knight?)")
+            print("No check path (Knight?)")
             return False

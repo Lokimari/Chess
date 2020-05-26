@@ -88,7 +88,7 @@ class ChessBoard:
             raise error_handling.ThatsNotUrFuckinTeam()
 
         # Pieces now have their own can_move methods, which references moves.py logic
-        if piece.can_move(move, self):
+        if piece.can_move(move, self) and not self.will_king_check(move, player_team, self.get_piece_pos(self.get_king(player_team))):
             piece.do_move(move, self)
             print(move)
         else:
@@ -115,7 +115,7 @@ class ChessBoard:
     def is_path_clear(self, move: Move):
         # Using move's normalization to determine direction ((-1 to 1), (-1 to 1))
         spaces_in_between = move.get_spaces_in_between()
-        print([str(x) for x in spaces_in_between])
+        # print([str(x) for x in spaces_in_between])
 
         # Checking intermediate spaces via normalized Vec2
         for space in spaces_in_between:
@@ -126,14 +126,14 @@ class ChessBoard:
         # Not blocked
         return True
 
-    def will_king_check(self, move, player_team):
+    def will_king_check(self, move, player_team, king_pos):
         old_spaces = self.spaces
         copied_spaces = self.copy_spaces()
         self.spaces = copied_spaces
 
         self.move(move)
 
-        is_safe = self.is_space_safe(move.new, player_team)
+        is_safe = self.is_space_safe(king_pos, player_team)
         self.spaces = old_spaces
 
         return not is_safe
@@ -214,3 +214,11 @@ class ChessBoard:
                 if attacker_piece.can_move(Move(attacker_pos, Vec2(x, y)), self):
                     move_list.append(Vec2(x, y))
         return move_list
+
+    def get_king(self, player_team):
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                if self.spaces[y][x] is not None:
+                    if self.spaces[y][x].name == "King" and self.spaces[y][x].team == player_team:
+                        print(f"get_king team: {self.spaces[y][x].team}")
+                        return self.spaces[x][y]

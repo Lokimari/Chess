@@ -40,7 +40,7 @@ def can_horsey_jump(move, board):
 def can_kingly_movement(move, board: ChessBoard):
     return ((abs(move.new.y - move.old.y) <= 1 and abs(move.new.x - move.old.x) <= 1)
             and board.is_dest_empty_or_enemy(move)
-            and not board.will_king_check(move, board.get_piece(move.old).team))
+            and not board.will_king_check(move, board.get_piece(move.old).team, move.new))
 
 def can_castle(move, board):
 
@@ -52,20 +52,24 @@ def can_castle(move, board):
 
     if board.get_piece(move.old).team == 1:
         if move.new.x == move.old.x + 2 and move.new.y == move.old.y:
-            if board.get_piece(Vec2(7, 7)).has_moved is False:
-                return True
+            if board.get_piece(Vec2(7, 7)) is not None:
+                if board.get_piece(Vec2(7, 7)).has_moved is False:
+                    return True
 
         elif move.new.x == move.old.x - 2 and move.new.y == move.old.y:
-            if board.get_piece(Vec2(7, 0)).has_moved is False:
-                return True
+            if board.get_piece(Vec2(0, 7)) is not None:
+                if board.get_piece(Vec2(0, 7)).has_moved is False:
+                    return True
 
     else:
         if move.new.x == move.old.x + 2 and move.new.y == move.old.y:
-            if board.get_piece(Vec2(7, 0)).has_moved is False:
-                return True
+            if board.get_piece(Vec2(7, 0)) is not None:
+                if board.get_piece(Vec2(7, 0)).has_moved is False:
+                    return True
 
         elif move.new.x == move.old.x - 2 and move.new.y == move.old.y:
-            if board.get_piece(Vec2(0, 0)).has_moved is False:
-                return True
+            if board.get_piece(Vec2(0, 0)) is not None:
+                if board.get_piece(Vec2(0, 0)).has_moved is False:
+                    return True
 
     return False

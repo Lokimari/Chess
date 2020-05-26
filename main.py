@@ -1,5 +1,5 @@
 # To-do:
-# add Check and Checkmate logic - allow friendlies to jump in the way of attacker to save king
+# add Check and Checkmate logic - needs test cases to confirm functionality
 # add fork notification
 
 # Coloration
