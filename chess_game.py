@@ -28,7 +28,7 @@ class ChessGame:
             move = input(f"Player {self.player_turn}, enter move: ")
             try:
                 move = move_from_string(move)
-                self.board.try_player_move(move, self.player_turn)
+                self.try_player_move(move, self.player_turn)
                 self.next_player_turn()
 
             # Error Handling
@@ -45,43 +45,29 @@ class ChessGame:
     # Piece placement
     def setup_pieces(self):
         # Top team
-        # for num in range(0, 1):
-        #     self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(0, 0), pieces.Rook(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(5, 0), pieces.Rook(team=2, color="magenta")) # test rook
-        # self.board.set_piece(Vec2(7, 0), pieces.Rook(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(1, 0), pieces.Knight(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
+        for num in range(0, 8):
+            self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2, color="magenta"))
+        self.board.set_piece(Vec2(0, 0), pieces.Rook(team=2, color="magenta"))
+        self.board.set_piece(Vec2(7, 0), pieces.Rook(team=2, color="magenta"))
+        self.board.set_piece(Vec2(1, 0), pieces.Knight(team=2, color="magenta"))
+        self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2, color="magenta"))
+        self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
+        self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
         self.p2_king = self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
-        self.board.set_piece(Vec2(7, 2), pieces.Queen(team=2, color="magenta")) # pieces are in test positions
-        self.board.set_piece(Vec2(7, 3), pieces.Rook(team=2, color="magenta"))
-        self.board.set_piece(Vec2(1, 4), pieces.Rook(team=2, color="magenta")) # having this line, but not the next bricks everything
-        #self.board.set_piece(Vec2(7, 4), pieces.Rook(team=2, color="magenta"))
+        self.board.set_piece(Vec2(4, 0), pieces.Queen(team=2, color="magenta"))
 
         # Bottom Team
-        # for num in range(0, 8):
-        #     self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1, color="yellow"))
-        #self.p1_king = self.board.set_piece(Vec2(5, 1), pieces.Knight(team=1, color="yellow")) # test Knight
-        # self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
-        self.p1_king = self.board.set_piece(Vec2(3, 3), pieces.King(team=1, color="yellow"))
+        for num in range(0, 8):
+            self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
+        self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1, color="yellow"))
+        self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
+        self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
+        self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
+        self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
+        self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
+        self.p1_king = self.board.set_piece(Vec2(4, 7), pieces.King(team=1, color="yellow"))
+        self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
 
-        # self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
-
-    # 1: In check
-    # 1.1: is_space_safe is False
-    # 2: Can't move out of check
-    # 2.1: make can_king_move func that loops through all board spaces, checks if king can move to it (safe place :))
-    # 3: Can't murder check
-    # 3.1: Acquire Attackers, get all friendlies(king too) - determine if they can attack the Attackers and also uncheck
-    # 3.2: ideas: implement get_all_pieces_on_team or have one big ass for loop
-    # 4: Friendly can't jump in way
     def is_checkmate(self) -> bool:
 
         self.highness = self.p1_king if self.player_turn == 1 else self.p2_king
@@ -141,3 +127,28 @@ class ChessGame:
         else:
             print("No check path (Knight?)")
             return False
+
+    # For while loop in chess_game.py
+    def try_player_move(self, move, player_team):
+        cur, new = move.old, move.new
+
+        # Bounds check
+        if not self.board.in_board(cur) or not self.board.in_board(new):
+            raise error_handling.OutOfBounds()
+
+        piece = self.board.get_piece(cur)
+
+        # Selected empty space
+        if piece is None:
+            raise error_handling.NoPieceInSpace()
+
+        # Wrong team check
+        if piece.team != player_team:
+            raise error_handling.ThatsNotUrFuckinTeam()
+
+        # Pieces now have their own can_move methods, which references moves.py logic
+        if piece.can_move(move, self.board):  # and not self.will_king_check(move, player_team, self.get_piece_pos(self.get_king(player_team))):
+            piece.do_move(move, self.board)
+            print(move)
+        else:
+            raise error_handling.IllegalMove()

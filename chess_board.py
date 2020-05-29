@@ -69,31 +69,6 @@ class ChessBoard:
     def in_board(self, pos):
         return not (pos.x < 0 or pos.x > 7 or pos.y < 0 or pos.y > 7)
 
-    # For while loop in chess_game.py
-    def try_player_move(self, move, player_team):
-        cur, new = move.old, move.new
-
-        # Bounds check
-        if not self.in_board(cur) or not self.in_board(new):
-            raise error_handling.OutOfBounds()
-
-        piece = self.get_piece(cur)
-
-        # Selected empty space
-        if piece is None:
-            raise error_handling.NoPieceInSpace()
-
-        # Wrong team check
-        if piece.team != player_team:
-            raise error_handling.ThatsNotUrFuckinTeam()
-
-        # Pieces now have their own can_move methods, which references moves.py logic
-        if piece.can_move(move, self) and not self.will_king_check(move, player_team, self.get_piece_pos(self.get_king(player_team))):
-            piece.do_move(move, self)
-            print(move)
-        else:
-            raise error_handling.IllegalMove()
-
     # Castling
     def castle(self, move):
         # Utilizing normalization to determine King or Queen side castling
@@ -171,14 +146,6 @@ class ChessBoard:
                     return True
         return False
 
-    # def get_piece_path(self, piece, piece_pos):
-    #     piece_path = []
-    #     for y in range(len(self.spaces)):
-    #         for x in range(len(self.spaces)):
-    #             if piece.can_move((Move(piece_pos, Vec2(x, y))), self):
-    #                 piece_path.append(Vec2(x, y))
-    #     return piece_path
-
     # Gets a piece's position
     def get_piece_pos(self, piece) -> Vec2:
         for y in range(len(self.spaces)):
@@ -220,5 +187,4 @@ class ChessBoard:
             for x in range(len(self.spaces)):
                 if self.spaces[y][x] is not None:
                     if self.spaces[y][x].name == "King" and self.spaces[y][x].team == player_team:
-                        print(f"get_king team: {self.spaces[y][x].team}")
                         return self.spaces[x][y]
