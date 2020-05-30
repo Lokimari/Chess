@@ -5,7 +5,7 @@ from datatypes import Vec2, Move
 from pieces import Pawn, King
 from error_handling import IllegalMove
 
-class TestTurns(unittest.TestCase):
+class ChessGameTests(unittest.TestCase):
     def setUp(self) -> None:
         self.player_turn = 1
         self.chess_game = ChessGame()
