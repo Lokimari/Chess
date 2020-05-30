@@ -10,7 +10,7 @@ init()  # Necessary for command prompt coloration
 
 def main():
 
-    game = ChessGame()
+    game = ChessGame(setup_pieces=True)
     game.run()
 
 

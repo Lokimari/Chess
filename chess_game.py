@@ -11,12 +11,13 @@ def move_from_string(string):
 
 # Game Process
 class ChessGame:
-    def __init__(self):
+    def __init__(self, setup_pieces=False):
         self.board = ChessBoard()
         self.highness = None
         self.p1_king = None
         self.p2_king = None
-        self.setup_pieces()
+        if setup_pieces:
+            self.setup_pieces()
         self.player_turn = 1
 
     def run(self):
