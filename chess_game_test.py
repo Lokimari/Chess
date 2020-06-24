@@ -53,13 +53,13 @@ class ChessGameTests(unittest.TestCase):
         # Act & Assert
         self.assertTrue(self.chess_game.board.get_king(self.player_turn))
 
-    def test_border_portal(self):
+    def test_knight_border_portal(self):
         # Arrange
         knight = Knight(team=2)
 
         knight_starting_space = Vec2(0, 1)
-        knight_destination_space = Vec2(1, 3)
+        knight_destination_space = Vec2(2, 6)
 
         self.chess_game.board.set_piece(knight_starting_space, knight)
         # Act & Assert
-        self.assertTrue(knight.can_move((Move(knight_starting_space, knight_destination_space)), self.chess_board))
+        self.assertFalse(knight.can_move((Move(knight_starting_space, knight_destination_space)), self.chess_board))
