@@ -1,14 +1,19 @@
 import unittest
 
 from chess_game import ChessGame
+from chess_board import ChessBoard
 from datatypes import Vec2, Move
-from pieces import Pawn, King
+from pieces import Pawn, King, Knight
 from error_handling import IllegalMove
+
+def setup_full_board(chess_game):
+    pass
 
 class ChessGameTests(unittest.TestCase):
     def setUp(self) -> None:
         self.player_turn = 1
         self.chess_game = ChessGame()
+        self.chess_board = ChessBoard()
         self.chess_game.player_turn = self.player_turn
         self.start_space = Vec2(5, 5)
         self.pawn = Pawn(team=self.player_turn)
@@ -47,3 +52,14 @@ class ChessGameTests(unittest.TestCase):
 
         # Act & Assert
         self.assertTrue(self.chess_game.board.get_king(self.player_turn))
+
+    def test_border_portal(self):
+        # Arrange
+        knight = Knight(team=2)
+
+        knight_starting_space = Vec2(0, 1)
+        knight_destination_space = Vec2(1, 3)
+
+        self.chess_game.board.set_piece(knight_starting_space, knight)
+        # Act & Assert
+        self.assertTrue(knight.can_move((Move(knight_starting_space, knight_destination_space)), self.chess_board))
