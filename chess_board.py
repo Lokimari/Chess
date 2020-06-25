@@ -127,10 +127,20 @@ class ChessBoard:
             for x in range(len(self.spaces)):
                 piece = self.get_piece(Vec2(x, y))
                 if piece and piece.team != for_team:
-                    # print(x, y) # it's only getting the first piece that can capture, we need all
                     if piece.can_move(Move(Vec2(x, y), pos), self):
                         return False
         return True
+
+    def print_all_moves_for_piece(self, pos):
+        a_board = ChessBoard()
+        piece = self.get_piece(pos)
+
+        for y in range(len(self.spaces)):
+            for x in range(len(self.spaces)):
+                if piece.can_move(Move(pos, Vec2(x, y)), self):
+                    a_board.spaces[y][x] = "x"
+
+        print(a_board.display())
 
     # Find a piece
     def get_piece_space(self, piece_to_find) -> Vec2:
