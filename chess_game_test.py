@@ -57,9 +57,12 @@ class ChessGameTests(unittest.TestCase):
         # Arrange
         knight = Knight(team=2)
 
-        knight_starting_space = Vec2(0, 1)
-        knight_destination_space = Vec2(2, 6)
+        knight_starting_space = Vec2(1, 0)
+        knight_destination_space = Vec2(0, 2)
+
+        knight_move = Move(knight_starting_space, knight_destination_space)
 
         self.chess_game.board.set_piece(knight_starting_space, knight)
+
         # Act & Assert
-        self.assertFalse(knight.can_move((Move(knight_starting_space, knight_destination_space)), self.chess_board))
+        self.assertTrue(knight.can_move(knight_move, self.chess_board))
