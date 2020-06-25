@@ -24,8 +24,8 @@ class Blockage(ChessException):
 
 class NoPieceInSpace(ChessException):
     def __init__(self, message="No piece in space"):
-        super (NoPieceInSpace, self).__init__(message)
+        super(NoPieceInSpace, self).__init__(message)
 
-class Checking_King(ChessException):
+class CheckingKing(ChessException):
     def __init__(self, message="King would be placed in check"):
-        super (Checking_King, self).__init__(message)
+        super(CheckingKing, self).__init__(message)
