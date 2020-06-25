@@ -7,6 +7,7 @@ import pieces
 def move_from_string(string):
     inputs = [int(num) for num in string.split(",")]
     cur_x, cur_y, new_x, new_y = inputs
+
     return Move(Vec2(cur_x, cur_y), Vec2(new_x, new_y))
 
 # Game Process
@@ -68,6 +69,9 @@ class ChessGame:
         self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
         self.p1_king = self.board.set_piece(Vec2(4, 7), pieces.King(team=1, color="yellow"))
         self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
+
+        # cool stuff
+        # self.board.print_all_moves_for_piece(Vec2(0, 0))
 
     def is_checkmate(self) -> bool:
 
@@ -147,8 +151,13 @@ class ChessGame:
         if piece.team != player_team:
             raise error_handling.ThatsNotUrFuckinTeam()
 
+        # Move puts own King in check
+        king_pos = self.board.get_piece_pos(self.board.get_king(player_team))
+        if self.board.will_king_check(move, player_team, king_pos):
+            raise error_handling.Checking_King()
+
         # Pieces now have their own can_move methods, which references moves.py logic
-        if piece.can_move(move, self.board):  # and not self.will_king_check(move, player_team, self.get_piece_pos(self.get_king(player_team))):
+        if piece.can_move(move, self.board):
             piece.do_move(move, self.board)
             print(move)
         else:
