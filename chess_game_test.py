@@ -13,9 +13,10 @@ class ChessGameTests(unittest.TestCase):
     def setUp(self) -> None:
         self.player_turn = 1
         self.chess_game = ChessGame()
-        self.chess_board = ChessBoard()
+        self.chess_board = self.chess_game.board
         self.chess_game.player_turn = self.player_turn
         self.start_space = Vec2(5, 5)
+        self.king = King(team=self.player_turn)
         self.pawn = Pawn(team=self.player_turn)
 
     def test_creating_a_chess_game_works_fuck(self):
@@ -46,9 +47,7 @@ class ChessGameTests(unittest.TestCase):
 
     def test_king_is_on_board(self):
         # Arrange
-        king = King(team=self.player_turn)
-
-        self.chess_game.board.set_piece(self.start_space, king)
+        self.chess_game.board.set_piece(self.start_space, self.king)
 
         # Act & Assert
         self.assertTrue(self.chess_game.board.get_king(self.player_turn))
