@@ -154,7 +154,7 @@ class ChessGame:
         # Move puts own King in check
         king_pos = self.board.get_piece_pos(self.board.get_king(player_team))
         if self.board.will_king_check(move, player_team, king_pos):
-            raise error_handling.Checking_King()
+            raise error_handling.CheckingKing()
 
         # Pieces now have their own can_move methods, which references moves.py logic
         if piece.can_move(move, self.board):
