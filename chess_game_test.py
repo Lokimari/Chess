@@ -65,3 +65,14 @@ class ChessGameTests(unittest.TestCase):
 
         # Act & Assert
         self.assertTrue(knight.can_move(knight_move, self.chess_board))
+
+    def test_get_king(self):
+        # Arrange
+        king_start_pos = Vec2(4, 0)
+        self.chess_game.board.set_piece(king_start_pos, self.king)
+
+        # Act
+        the_king = self.chess_board.get_king(self.player_turn)
+
+        # Assert
+        self.assertEqual(self.king, the_king)
