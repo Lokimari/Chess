@@ -196,6 +196,6 @@ class ChessBoard:
     def get_king(self, player_team):
         for y in range(len(self.spaces)):
             for x in range(len(self.spaces)):
-                if self.spaces[y][x] is not None:
-                    if self.spaces[y][x].name == "King" and self.spaces[y][x].team == player_team:
-                        return self.spaces[x][y]
+                piece = self.get_piece(Vec2(x, y))
+                if piece and piece.name == "King" and piece.team == player_team:
+                    return piece
