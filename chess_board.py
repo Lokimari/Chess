@@ -34,11 +34,12 @@ class ChessBoard:
         print(board_string)
 
     # Piece movement
-    def move(self, move):
+    def move(self, move, should_update_piece=True):
         piece = self.get_piece(move.old)
         self.spaces[move.new.y][move.new.x] = piece
         self.spaces[move.old.y][move.old.x] = None
-        piece.has_moved = True
+        if should_update_piece:
+            piece.has_moved = True
 
     # General piece movement check
     #######################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
@@ -106,7 +107,7 @@ class ChessBoard:
         copied_spaces = self.copy_spaces()
         self.spaces = copied_spaces
 
-        self.move(move)
+        self.move(move, False)
 
         is_safe = self.is_space_safe(king_pos, player_team)
         self.spaces = old_spaces
