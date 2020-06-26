@@ -17,7 +17,10 @@ class ChessGameTests(unittest.TestCase):
         self.chess_game.player_turn = self.player_turn
         self.start_space = Vec2(5, 5)
         self.king = King(team=self.player_turn)
+        self.knight = Knight(team=self.player_turn)
         self.pawn = Pawn(team=self.player_turn)
+        self.enemy_pawn = Pawn(team=2)
+        self.moved_pawn = Pawn(team=1, has_moved=True)
 
     def test_creating_a_chess_game_works_fuck(self):
         self.assertIsInstance(self.chess_game, ChessGame)
@@ -54,7 +57,7 @@ class ChessGameTests(unittest.TestCase):
 
     def test_knight_border_portal(self):
         # Arrange
-        knight = Knight(team=2)
+        knight = Knight(team=1)
 
         knight_starting_space = Vec2(1, 0)
         knight_destination_space = Vec2(0, 2)
@@ -101,7 +104,7 @@ class ChessGameTests(unittest.TestCase):
 
     def test_king_cannot_endanger_himself(self):
         # Arrange
-        king_start_pos = Vec2(4,7)
+        king_start_pos = Vec2(4, 7)
         self.chess_game.board.set_piece(king_start_pos, self.king)
         self.chess_game.board.set_piece(Vec2(5, 5), self.enemy_pawn)
 
@@ -110,3 +113,36 @@ class ChessGameTests(unittest.TestCase):
 
         # Assert
         self.assertFalse(king_move)
+
+    def test_pawn_may_double_jump(self):
+        # Arrange
+        pawn_start_pos = Vec2(5, 5)
+
+        # Act
+        pawn_move = self.pawn.can_move(Move(pawn_start_pos, Vec2(5, 3)), self.chess_board)
+
+        # Assert
+        self.assertTrue(pawn_move)
+
+    def test_pawn_may_not_double_jump_after_moving(self):
+        # Arrange
+        pawn_start_pos = Vec2(5, 5)
+
+        # Act
+        pawn_move = self.moved_pawn.can_move(Move(pawn_start_pos, Vec2(5, 3)), self.chess_board)
+
+        # Assert
+        self.assertFalse(pawn_move)
+
+    def test_horse_may_jump(self):
+        # Arrange
+        knight_start_pos = Vec2(5, 5)
+        self.chess_game.board.set_piece(knight_start_pos, self.knight)
+        self.chess_game.board.set_piece(Vec2(5, 4), self.pawn)
+        self.chess_game.board.set_piece(Vec2(4, 4), self.king)
+
+        # Act
+        knight_jump = self.knight.can_move(Move(knight_start_pos, Vec2(3, 4)), self.chess_board)
+
+        # Assert
+        self.assertTrue(knight_jump)
