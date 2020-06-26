@@ -76,3 +76,37 @@ class ChessGameTests(unittest.TestCase):
 
         # Assert
         self.assertEqual(self.king, the_king)
+
+    def test_get_king_returns_none_if_no_king(self):
+        # Arrange
+        # No arrangement
+
+        # Act
+        the_king = self.chess_board.get_king(self.player_turn)
+
+        # Assert
+        self.assertIsNone(the_king)
+
+    def test_can_king_free_himself_if_checked(self):
+        # Arrange
+        king_start_pos = Vec2(4,7)
+        self.chess_game.board.set_piece(king_start_pos, self.king)
+        self.chess_game.board.set_piece(Vec2(5, 6), self.enemy_pawn)
+
+        # Act
+        king_move = self.king.can_move(Move(king_start_pos, Vec2(3, 7)), self.chess_board)
+
+        # Assert
+        self.assertTrue(king_move)
+
+    def test_king_cannot_endanger_himself(self):
+        # Arrange
+        king_start_pos = Vec2(4,7)
+        self.chess_game.board.set_piece(king_start_pos, self.king)
+        self.chess_game.board.set_piece(Vec2(5, 5), self.enemy_pawn)
+
+        # Act
+        king_move = self.king.can_move(Move(king_start_pos, Vec2(4, 6)), self.chess_board)
+
+        # Assert
+        self.assertFalse(king_move)
