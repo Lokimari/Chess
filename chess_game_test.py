@@ -3,7 +3,7 @@ import unittest
 from chess_game import ChessGame
 from chess_board import ChessBoard
 from datatypes import Vec2, Move
-from pieces import Pawn, King, Knight
+from pieces import Pawn, King, Knight, Rook
 from error_handling import IllegalMove
 
 def setup_full_board(chess_game):
@@ -146,3 +146,39 @@ class ChessGameTests(unittest.TestCase):
 
         # Assert
         self.assertTrue(knight_jump)
+
+    def test_king_may_castle_left(self):
+        # Arrange
+        king_start_pos = Vec2(4, 7)
+        rook_start_pos = Vec2(0, 7)
+        self.chess_game.board.set_piece(king_start_pos, self.king)
+        self.chess_game.board.set_piece(rook_start_pos, Rook(team=self.player_turn))
+
+        # Act
+        castle_move = self.king.can_move(Move(king_start_pos, Vec2(2, 7)), self.chess_board)
+
+        # Assert
+        self.assertTrue(castle_move)
+
+    def test_king_may_castle_right(self):
+        # Arrange
+        king_start_pos = Vec2(4, 7)
+        rook_start_pos = Vec2(7, 7)
+        self.chess_game.board.set_piece(king_start_pos, self.king)
+        self.chess_game.board.set_piece(rook_start_pos, Rook(team=self.player_turn))
+
+        # Act
+        castle_move = self.king.can_move(Move(king_start_pos, Vec2(6, 7)), self.chess_board)
+
+        # Assert
+        self.assertTrue(castle_move)
+
+    def piece_may_not_move_out_of_bounds(self):
+        # Arrange
+        knight_end_pos = Vec2(-2, -1)
+
+        # Act
+        is_knight_moving_inbound = self.chess_board.in_board(knight_end_pos)
+
+        # Assert
+        self.assertFalse(is_knight_moving_inbound)
