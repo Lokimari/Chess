@@ -128,6 +128,7 @@ class ChessBoard:
                 piece = self.get_piece(Vec2(x, y))
                 if piece and piece.team != for_team:
                     if piece.can_move(Move(Vec2(x, y), pos), self):
+                        print(f"{piece} can take {pos}")
                         return False
         return True
 

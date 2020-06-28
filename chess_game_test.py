@@ -173,6 +173,32 @@ class ChessGameTests(unittest.TestCase):
         # Assert
         self.assertTrue(castle_move)
 
+    def test_king_cannot_over_move_For_castle_left(self):
+        # Arrange
+        king_start_pos = Vec2(4, 7)
+        rook_start_pos = Vec2(0, 7)
+        self.chess_game.board.set_piece(king_start_pos, self.king)
+        self.chess_game.board.set_piece(rook_start_pos, Rook(team=self.player_turn))
+
+        # Act
+        castle_move = self.king.can_move(Move(king_start_pos, Vec2(1, 7)), self.chess_board)
+
+        # Assert
+        self.assertFalse(castle_move)
+
+    def test_king_cannot_over_move_For_castle_right(self):
+        # Arrange
+        king_start_pos = Vec2(4, 7)
+        rook_start_pos = Vec2(7, 7)
+        self.chess_game.board.set_piece(king_start_pos, self.king)
+        self.chess_game.board.set_piece(rook_start_pos, Rook(team=self.player_turn))
+
+        # Act
+        castle_move = self.king.can_move(Move(king_start_pos, Vec2(7, 7)), self.chess_board)
+
+        # Assert
+        self.assertFalse(castle_move)
+
     def piece_may_not_move_out_of_bounds(self):
         # Arrange
         knight_end_pos = Vec2(-2, -1)

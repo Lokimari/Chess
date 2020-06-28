@@ -47,31 +47,31 @@ class ChessGame:
     # Piece placement
     def setup_pieces(self):
         # Top team
-        for num in range(0, 8):
-            self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2, color="magenta"))
-        self.board.set_piece(Vec2(0, 0), pieces.Rook(team=2, color="magenta"))
-        self.board.set_piece(Vec2(7, 0), pieces.Rook(team=2, color="magenta"))
-        self.board.set_piece(Vec2(1, 0), pieces.Knight(team=2, color="magenta"))
-        self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2, color="magenta"))
-        self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
-        self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
+        # for num in range(0, 8):
+        #     self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2, color="magenta"))
+        self.board.set_piece(Vec2(4, 1), pieces.Rook(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(7, 0), pieces.Rook(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(1, 0), pieces.Knight(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
         self.p2_king = self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
-        self.board.set_piece(Vec2(4, 0), pieces.Queen(team=2, color="magenta"))
+        # self.board.set_piece(Vec2(4, 0), pieces.Queen(team=2, color="magenta"))
 
         # Bottom Team
-        for num in range(0, 8):
-            self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
-        self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1, color="yellow"))
-        self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
-        self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
-        self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
-        self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
-        self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
+        # for num in range(0, 8):
+        #     self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
+        # self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1, color="yellow"))
+        # self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
+        # self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
+        # self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
+        # self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
+        # self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
         self.p1_king = self.board.set_piece(Vec2(4, 7), pieces.King(team=1, color="yellow"))
-        self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
+        # self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
 
         # cool stuff
-        # self.board.print_all_moves_for_piece(Vec2(0, 0))
+        self.board.print_all_moves_for_piece(Vec2(4, 7))
 
     def is_checkmate(self) -> bool:
 
