@@ -65,7 +65,7 @@ class ChessGame:
         # self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
         # self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
         # self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1, color="yellow"))
+        self.board.set_piece(Vec2(4, 6), pieces.Bishop(team=1, color="yellow"))
         # self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
         self.p1_king = self.board.set_piece(Vec2(4, 7), pieces.King(team=1, color="yellow"))
         # self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
@@ -153,8 +153,16 @@ class ChessGame:
 
         # Move puts own King in check
         king_pos = self.board.get_piece_pos(self.board.get_king(player_team))
-        if self.board.will_king_check(move, player_team, move.new):
-            raise error_handling.CheckingKing()
+
+        # This allows Kings to free themselves
+        if piece is pieces.King:
+            if self.board.will_king_check(move, player_team, move.new):
+                raise error_handling.CheckingKing()
+
+        # This prevents other pieces from endangering the King
+        else:
+            if self.board.will_king_check(move, player_team, king_pos):
+                raise error_handling.CheckingKing()
 
         # Pieces now have their own can_move methods, which references moves.py logic
         if piece.can_move(move, self.board):
