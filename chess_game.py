@@ -17,6 +17,10 @@ class ChessGame:
         self.highness = None
         self.p1_king = None
         self.p2_king = None
+        self.player_turn = 1
+        self.other_player_turn = 2
+        self.player_1_color = "yellow"
+        self.player_2_color = "magenta"
         if setup_pieces:
             self.setup_pieces()
         self.player_turn = 1
@@ -168,5 +172,20 @@ class ChessGame:
         if piece.can_move(move, self.board):
             piece.do_move(move, self.board)
             print(move)
+            if piece.name == "Pawn" and piece.team == 1:
+                if move.new.y == 0:
+                    self.pawn_promotion(move.new)
+            elif piece.name == "Pawn" and piece.team == 2:
+                if move.new.y == 7:
+                    self.pawn_promotion(move.new)
         else:
             raise error_handling.IllegalMove()
+
+    def pawn_promotion(self, pos):
+        print("Promotion! - Bishop, Knight, Rook, or Queen?")
+        promotion_choice = input()
+        color = self.player_1_color if self.player_turn == 1 else self.player_2_color
+
+        pawn = self.board.get_piece(pos)
+        if promotion_choice == "Queen":
+            self.board.spaces[pos.y][pos.x] = pieces.Queen(team=pawn.team, color=color)
