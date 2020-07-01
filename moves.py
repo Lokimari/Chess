@@ -42,15 +42,16 @@ def can_kingly_movement(move, board: ChessBoard):
             and board.is_dest_empty_or_enemy(move)
             and not board.will_king_check(move, board.get_piece(move.old).team, move.new))
 
-def can_castle(move, board):
+def can_castle(move, board: ChessBoard):
+    king = board.get_piece(move.old)
 
     if not board.is_path_clear(move):
         return False
 
-    if board.get_piece(move.old).has_moved:
+    if king.has_moved:
         return False
 
-    if board.get_piece(move.old).team == 1:
+    if king.team == 1:
         if move.new.x == move.old.x + 2 and move.new.y == move.old.y:
             if board.get_piece(Vec2(7, 7)) is not None:
                 if board.get_piece(Vec2(7, 7)).has_moved is False:
