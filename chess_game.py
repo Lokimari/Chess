@@ -162,6 +162,10 @@ class ChessGame:
         if piece is pieces.King:
             if self.board.will_king_check(move, player_team, move.new):
                 raise error_handling.CheckingKing()
+            elif not self.board.is_space_safe(move.old, piece.team):
+                raise error_handling.CastlingWhileChecked()
+            elif not self.board.is_castle_path_clear(move, player_team):
+                raise error_handling.CastlePathBlocked()
 
         # This prevents other pieces from endangering the King
         else:
