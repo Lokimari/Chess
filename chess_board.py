@@ -1,6 +1,7 @@
 import error_handling
 from datatypes import Move, Vec2
 from typing import List
+import copy
 
 
 # Game Environment
@@ -104,7 +105,7 @@ class ChessBoard:
 
     def will_king_check(self, move, player_team, king_pos):
         old_spaces = self.spaces
-        copied_spaces = self.copy_spaces()
+        copied_spaces = copy.deepcopy(self.spaces)
         self.spaces = copied_spaces
 
         self.move(move, False)
@@ -113,13 +114,6 @@ class ChessBoard:
         self.spaces = old_spaces
 
         return not is_safe
-
-    def copy_spaces(self) -> List:
-        copied_spaces = self.build()
-        for y in range(len(copied_spaces)):
-            for x in range(len(copied_spaces)):
-                copied_spaces[x][y] = self.spaces[x][y]
-        return copied_spaces
 
     # Checking if King is moving out of check (Does not account for taking a spot to remove check)
     def is_space_safe(self, pos: Vec2, for_team: int) -> bool:
