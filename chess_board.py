@@ -103,6 +103,16 @@ class ChessBoard:
         # Not blocked
         return True
 
+        # Castling path checking
+    def is_castle_path_clear(self, move: Move, player_team):
+        spaces_in_between = move.get_spaces_in_between()
+
+        for space in spaces_in_between:
+            if not self.is_space_safe(space, player_team):
+                return False
+
+        return True
+
     def will_king_check(self, move, player_team, king_pos):
         old_spaces = self.spaces
         copied_spaces = copy.deepcopy(self.spaces)
