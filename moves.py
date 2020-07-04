@@ -51,23 +51,23 @@ def can_castle(move, board: ChessBoard):
         return False
 
     if king.team == 1:
-        if move.new.x == move.old.x + 2 and move.new.y == move.old.y:
+        if move.new == Vec2(6, 7):
             if board.get_piece(Vec2(7, 7)) is not None:
                 if board.get_piece(Vec2(7, 7)).has_moved is False:
                     return True
 
-        elif move.new.x == move.old.x - 2 and move.new.y == move.old.y:
+        elif move.new == Vec2(2, 7):
             if board.get_piece(Vec2(0, 7)) is not None:
                 if board.get_piece(Vec2(0, 7)).has_moved is False:
                     return True
 
     else:
-        if move.new.x == move.old.x + 2 and move.new.y == move.old.y:
+        if move.new == Vec2(6, 0):
             if board.get_piece(Vec2(7, 0)) is not None:
                 if board.get_piece(Vec2(7, 0)).has_moved is False:
                     return True
 
-        elif move.new.x == move.old.x - 2 and move.new.y == move.old.y:
+        elif move.new == Vec2(2, 0):
             if board.get_piece(Vec2(0, 0)) is not None:
                 if board.get_piece(Vec2(0, 0)).has_moved is False:
                     return True
