@@ -3,17 +3,21 @@ import datatypes
 import moves
 
 class King:
-    def __init__(self, team, color="white", has_moved=False):
+    def __init__(self, team, color="white", has_moved=False, is_castling=False):
         self.color = color
         self.team = team
         self.name = "King"
         self.has_moved = has_moved
+        self.is_castling = is_castling
 
     def __str__(self):
         return colored("K", self.color)
 
     def can_move(self, move, board):
         return moves.can_kingly_movement(move, board) or moves.can_castle(move, board)
+
+    def is_castling_move(self, move, board):
+        self.is_castling = moves.is_castling(move, board)
 
     def do_move(self, move, board):
         if moves.can_castle(move, board):
