@@ -131,8 +131,9 @@ class ChessGame:
                     move = Move(friendly_pos, pos)
                     if friendly.can_move(move, self.board):
                         if not self.board.will_king_check(move, self.highness.team, self.board.get_piece_pos(self.highness)):
-                            print(f"Checker may be blocked via {move}")
-                            return True
+                            if friendly.name != "King":
+                                print(f"Checker may be blocked via {move}")
+                                return True
         else:
             print("No check path (Knight?)")
             return False
