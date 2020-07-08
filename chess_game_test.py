@@ -1,7 +1,6 @@
 import unittest
 
 from chess_game import ChessGame
-from chess_board import ChessBoard
 from datatypes import Vec2, Move
 from pieces import Pawn, King, Knight, Rook
 from error_handling import IllegalMove
