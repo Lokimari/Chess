@@ -44,35 +44,54 @@ def can_kingly_movement(move, board: ChessBoard):
 def can_castle(move, board: ChessBoard):
     king = board.get_piece(move.old)
 
-    if not board.is_path_clear(move):
+    king.is_castling_move(move, board)
+
+    if king.is_castling:
+
+        if not board.is_path_clear(move):
+            return False
+
+        if king.has_moved:
+            return False
+
+        if king.team == 1:
+            if move.new == Vec2(6, 7):
+                if board.get_piece(Vec2(7, 7)) is not None:
+                    if board.get_piece(Vec2(7, 7)).has_moved is False:
+                        return True
+
+            elif move.new == Vec2(2, 7):
+                if board.get_piece(Vec2(0, 7)) is not None:
+                    if board.get_piece(Vec2(0, 7)).has_moved is False:
+                        return True
+
+        else:
+            if move.new == Vec2(6, 0):
+                if board.get_piece(Vec2(7, 0)) is not None:
+                    if board.get_piece(Vec2(7, 0)).has_moved is False:
+                        return True
+
+            elif move.new == Vec2(2, 0):
+                if board.get_piece(Vec2(0, 0)) is not None:
+                    if board.get_piece(Vec2(0, 0)).has_moved is False:
+                        return True
+
+        # if board.is_space_safe(move.old, king.team):
+        #     return False
+
         return False
 
-    if king.has_moved:
-        return False
+    return False
+
+def is_castling(move, board: ChessBoard):
+    king = board.get_piece(move.old)
 
     if king.team == 1:
-        if move.new == Vec2(6, 7):
-            if board.get_piece(Vec2(7, 7)) is not None:
-                if board.get_piece(Vec2(7, 7)).has_moved is False:
-                    return True
-
-        elif move.new == Vec2(2, 7):
-            if board.get_piece(Vec2(0, 7)) is not None:
-                if board.get_piece(Vec2(0, 7)).has_moved is False:
-                    return True
+        if move.new == Vec2(6, 7) or move.new == Vec2(2, 7):
+            return True
 
     else:
-        if move.new == Vec2(6, 0):
-            if board.get_piece(Vec2(7, 0)) is not None:
-                if board.get_piece(Vec2(7, 0)).has_moved is False:
-                    return True
-
-        elif move.new == Vec2(2, 0):
-            if board.get_piece(Vec2(0, 0)) is not None:
-                if board.get_piece(Vec2(0, 0)).has_moved is False:
-                    return True
-
-    # if board.is_space_safe(move.old, king.team):
-    #     return False
+        if move.new == Vec2(6, 0) or move.new == Vec2(2, 0):
+            return True
 
     return False
