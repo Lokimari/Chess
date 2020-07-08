@@ -29,3 +29,11 @@ class NoPieceInSpace(ChessException):
 class CheckingKing(ChessException):
     def __init__(self, message="King would be placed in check"):
         super(CheckingKing, self).__init__(message)
+
+class CastlingWhileChecked(ChessException):
+    def __init__(self, message="King is in check, may not castle"):
+        super(CastlingWhileChecked, self).__init__(message)
+
+class CastlePathBlocked(ChessException):
+    def __init__(self, message="The castle path is endangered!"):
+        super(CastlePathBlocked, self).__init__(message)
