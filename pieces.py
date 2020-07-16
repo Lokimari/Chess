@@ -9,6 +9,7 @@ class King:
         self.name = "King"
         self.has_moved = has_moved
         self.is_castling = is_castling
+        self.move_counter = 0
 
     def __str__(self):
         return colored("K", self.color)
@@ -31,6 +32,7 @@ class Queen:
         self.team = team
         self.name = "Queen"
         self.has_moved = has_moved
+        self.move_counter = 0
 
     def __str__(self):
         return colored("Q", self.color)
@@ -47,6 +49,7 @@ class Bishop:
         self.team = team
         self.name = "Bishop"
         self.has_moved = has_moved
+        self.move_counter = 0
 
     def __str__(self):
         return colored("B", self.color)
@@ -64,6 +67,7 @@ class Rook:
         self.team = team
         self.name = "Rook"
         self.has_moved = has_moved
+        self.move_counter = 0
 
     def __str__(self):
         return colored("R", self.color)
@@ -81,6 +85,7 @@ class Knight:
         self.team = team
         self.name = "Knight"
         self.has_moved = has_moved
+        self.move_counter = 0
 
     def __str__(self):
         return colored("H", self.color)
@@ -100,6 +105,7 @@ class Pawn:
         self.has_moved = has_moved
         self.forward = (datatypes.Vec2(0, -1) if team == 1 else datatypes.Vec2(0, 1))
         self.left = datatypes.Vec2(-self.forward.y, self.forward.x)
+        self.move_counter = 0
 
     def __str__(self):
         return colored("P", self.color)
