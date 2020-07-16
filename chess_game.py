@@ -210,3 +210,8 @@ class ChessGame:
 
         if promotion_choice == "Bishop":
             self.board.spaces[pos.y][pos.x] = pieces.Bishop(team=pawn.team, color=color)
+
+    def get_previous_move_piece(self):
+        previous_move_piece = self.board.get_piece(self.move_history[self.turn_counter - 1])
+
+        return previous_move_piece
