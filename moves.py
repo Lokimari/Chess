@@ -3,7 +3,38 @@ from datatypes import Vec2
 # Piece move logic
 
 # Pawn
-def can_step_forward(piece, move, board):
+def can_an_passant(piece, move, board: ChessBoard):
+    left_neighbor = board.get_piece(Vec2(move.old.x - 1, move.old.y))
+    right_neighbor = board.get_piece(Vec2(move.old.x + 1, move.old.y))
+
+    if piece.team == 1:
+        if move.old.y == 3:
+            if left_neighbor is not None:
+                if left_neighbor.name == "Pawn" and left_neighbor.move_counter == 1 and left_neighbor.team != piece.team:
+                    board.spaces[move.old.y][move.old.x - 1] = None
+                    print("An-passant!")
+                    return True
+            elif right_neighbor is not None:
+                if right_neighbor.name == "Pawn" and right_neighbor.move_counter == 1 and right_neighbor.team != piece.team:
+                    board.spaces[move.old.y][move.old.x - 1] = None
+                    print("An-passant!")
+                    return True
+
+    elif piece.team == 2:
+        if move.old.y == 4:
+            if left_neighbor is not None:
+                if left_neighbor.name == "Pawn" and left_neighbor.move_counter == 1 and left_neighbor.team != piece.team:
+                    board.spaces[move.old.y][move.old.x - 1] = None
+                    print("An-passant!")
+                    return True
+            elif right_neighbor is not None:
+                if right_neighbor.name == "Pawn" and right_neighbor.move_counter == 1 and right_neighbor.team != piece.team:
+                    board.spaces[move.old.y][move.old.x - 1] = None
+                    print("An-passant!")
+                    return True
+    return False
+
+def can_step_forward(piece, move, board: ChessBoard):
     is_normal_move = move.new == (move.old + piece.forward)
     is_double_step = not piece.has_moved and move.new == move.old + piece.forward * 2
     is_legal_move = is_normal_move or is_double_step
@@ -18,7 +49,8 @@ def can_step_diagonal(piece, move, board):
 
 def can_pawn_move(piece, move, board):
     return (can_step_forward(piece, move, board) or
-            can_step_diagonal(piece, move, board))
+            can_step_diagonal(piece, move, board) or
+            can_an_passant(piece, move, board))
 # End Pawn
 
 def can_move_diagonally(move, board):
