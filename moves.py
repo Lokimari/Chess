@@ -41,19 +41,19 @@ def can_step_forward(piece, move, board: ChessBoard):
 
     return is_legal_move and board.is_unoccupied(move.new)
 
-def can_step_diagonal(piece, move, board):
+def can_step_diagonal(piece, move, board: ChessBoard):
     is_diagonal_move = (move.new == move.old + piece.forward + piece.left or
                         move.new == move.old + piece.forward - piece.left)
 
     return is_diagonal_move and board.is_dest_occupied_by_enemy(move)
 
-def can_pawn_move(piece, move, board):
+def can_pawn_move(piece, move, board: ChessBoard):
     return (can_step_forward(piece, move, board) or
             can_step_diagonal(piece, move, board) or
             can_an_passant(piece, move, board))
 # End Pawn
 
-def can_move_diagonally(move, board):
+def can_move_diagonally(move, board: ChessBoard):
     return (move.is_diagonal() and
             board.is_path_clear(move) and
             board.is_dest_empty_or_enemy(move))
