@@ -25,7 +25,11 @@ class ChessGame:
         self.player_2_color = "magenta"
         if setup_pieces:
             self.setup_pieces()
-        self.player_turn = 1
+
+    def end_game(self):
+        print("Game Over")
+        print(f"Player {self.other_player_turn} wins!")
+        exit()
 
     def run(self):
         # Game Process Logic
