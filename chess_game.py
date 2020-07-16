@@ -39,6 +39,7 @@ class ChessGame:
                 self.end_game()
             self.board.display()
             move = input(f"Player {self.player_turn}, enter move: ")
+            move = move_from_string(move)
             try:
                 move = move_from_string(move)
                 self.try_player_move(move, self.player_turn)
