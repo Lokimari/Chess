@@ -19,6 +19,8 @@ class ChessGame:
         self.p2_king = None
         self.player_turn = 1
         self.other_player_turn = 2
+        self.turn_counter = 0
+        self.move_history = []
         self.player_1_color = "yellow"
         self.player_2_color = "magenta"
         if setup_pieces:
@@ -36,6 +38,8 @@ class ChessGame:
             try:
                 move = move_from_string(move)
                 self.try_player_move(move, self.player_turn)
+                self.move_history.append(move)
+                self.board.get_piece(move.new).move_counter += 1
                 self.next_player_turn()
 
             # Error Handling
@@ -47,7 +51,9 @@ class ChessGame:
 
     # After a successful turn, switch players
     def next_player_turn(self):
+        self.turn_counter += 1
         self.player_turn = 2 if self.player_turn == 1 else 1
+        self.other_player_turn = 2 if self.player_turn == 2 else 1
 
     # Piece placement
     def setup_pieces(self):
