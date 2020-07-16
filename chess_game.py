@@ -30,6 +30,7 @@ class ChessGame:
         while True:
             if self.is_checkmate():
                 print("Checkmate")
+                self.end_game()
             self.board.display()
             move = input(f"Player {self.player_turn}, enter move: ")
             try:
