@@ -4,32 +4,32 @@ from datatypes import Vec2
 
 # Pawn
 def can_an_passant(piece, move, board: ChessBoard):
-    left_neighbor = board.get_piece(Vec2(move.old.x - 1, move.old.y))
-    right_neighbor = board.get_piece(Vec2(move.old.x + 1, move.old.y))
+    left_neighbor_pos = Vec2(move.old.x - 1, move.old.y)
+    right_neighbor_pos = Vec2(move.old.x + 1, move.old.y)
 
     if piece.team == 1:
         if move.old.y == 3:
-            if left_neighbor is not None:
-                if left_neighbor.name == "Pawn" and left_neighbor.move_counter == 1 and left_neighbor.team != piece.team:
+            if board.get_piece(left_neighbor_pos) != None and move.old.x != 0:
+                if board.get_piece(left_neighbor_pos).name == "Pawn" and board.get_piece(left_neighbor_pos).move_counter == 1 and board.get_piece(left_neighbor_pos).team != piece.team:
                     board.spaces[move.old.y][move.old.x - 1] = None
                     print("An-passant!")
                     return True
-            elif right_neighbor is not None:
-                if right_neighbor.name == "Pawn" and right_neighbor.move_counter == 1 and right_neighbor.team != piece.team:
-                    board.spaces[move.old.y][move.old.x - 1] = None
+            elif board.get_piece(right_neighbor_pos) != None and move.old.x != 7:
+                if board.get_piece(right_neighbor_pos).name == "Pawn" and board.get_piece(right_neighbor_pos).move_counter == 1 and board.get_piece(right_neighbor_pos).team != piece.team:
+                    board.spaces[move.old.y][move.old.x + 1] = None
                     print("An-passant!")
                     return True
 
     elif piece.team == 2:
         if move.old.y == 4:
-            if left_neighbor is not None:
-                if left_neighbor.name == "Pawn" and left_neighbor.move_counter == 1 and left_neighbor.team != piece.team:
+            if board.get_piece(left_neighbor_pos) != None and move.old.x != 0:
+                if board.get_piece(left_neighbor_pos).name == "Pawn" and board.get_piece(left_neighbor_pos).move_counter == 1 and board.get_piece(left_neighbor_pos).team != piece.team:
                     board.spaces[move.old.y][move.old.x - 1] = None
                     print("An-passant!")
                     return True
-            elif right_neighbor is not None:
-                if right_neighbor.name == "Pawn" and right_neighbor.move_counter == 1 and right_neighbor.team != piece.team:
-                    board.spaces[move.old.y][move.old.x - 1] = None
+            elif board.get_piece(right_neighbor_pos) != None and move.old.x != 7:
+                if board.get_piece(right_neighbor_pos).name == "Pawn" and board.get_piece(right_neighbor_pos).move_counter == 1 and board.get_piece(right_neighbor_pos).team != piece.team:
+                    board.spaces[move.old.y][move.old.x + 1] = None
                     print("An-passant!")
                     return True
     return False
