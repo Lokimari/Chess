@@ -172,12 +172,14 @@ class ChessGame:
         king_pos = self.board.get_piece_pos(self.board.get_king(player_team))
 
         # This allows Kings to free themselves
-        if piece is pieces.King:
+        if piece.name == "King":
+            piece.is_castling_move(move, self.board)
+
             if self.board.will_king_check(move, player_team, move.new):
                 raise error_handling.CheckingKing()
-            elif not self.board.is_space_safe(move.old, piece.team):
+            elif not self.board.is_space_safe(king_pos, piece.team) and piece.is_castling:
                 raise error_handling.CastlingWhileChecked()
-            elif not self.board.is_castle_path_clear(move, player_team):
+            elif not self.board.is_castle_path_clear(move, player_team) and piece.is_castling:
                 raise error_handling.CastlePathBlocked()
 
         # This prevents other pieces from endangering the King
