@@ -2,17 +2,28 @@ from termcolor import colored
 import datatypes
 import moves
 
-class King:
-    def __init__(self, team, color="white", has_moved=False, is_castling=False):
-        self.color = color
+class Piece:
+    def __init__(self, team, name, symbol):
+        self.color = "yellow" if team == 1 else "magenta"
         self.team = team
-        self.name = "King"
-        self.has_moved = has_moved
-        self.is_castling = is_castling
+        self.name = name
+        self.has_moved = False
         self.move_counter = 0
+        self.symbol = symbol
 
     def __str__(self):
-        return colored("K", self.color)
+        return colored(self.symbol, self.color)
+
+    def can_move(self, move, board):
+        raise Exception("Unimplemented")
+
+    def do_move(self, move, board):
+        raise Exception("Unimplemented")
+
+class King(Piece):
+    def __init__(self, team, is_castling=False):
+        super().__init__(team, name="King", symbol="K")
+        self.is_castling = is_castling
 
     def can_move(self, move, board):
         return moves.can_kingly_movement(move, board) or moves.can_castle(move, board)
@@ -26,16 +37,9 @@ class King:
         else:
             board.move(move)
 
-class Queen:
-    def __init__(self, team, color="white", has_moved=False):
-        self.color = color
-        self.team = team
-        self.name = "Queen"
-        self.has_moved = has_moved
-        self.move_counter = 0
-
-    def __str__(self):
-        return colored("Q", self.color)
+class Queen(Piece):
+    def __init__(self, team):
+        super().__init__(team, name="Queen", symbol="Q")
 
     def can_move(self, move, board):
         return moves.can_move_diagonally(move, board) or moves.can_move_xy(move, board)
@@ -43,16 +47,9 @@ class Queen:
     def do_move(self, move, board):
         board.move(move)
 
-class Bishop:
-    def __init__(self, team, color="white", has_moved=False):
-        self.color = color
-        self.team = team
-        self.name = "Bishop"
-        self.has_moved = has_moved
-        self.move_counter = 0
-
-    def __str__(self):
-        return colored("B", self.color)
+class Bishop(Piece):
+    def __init__(self, team):
+        super().__init__(team, name="Bishop", symbol="B")
 
     def can_move(self, move, board):
         return moves.can_move_diagonally(move, board)
@@ -61,16 +58,9 @@ class Bishop:
         board.move(move)
 
 
-class Rook:
-    def __init__(self, team, color="white", has_moved=False):
-        self.color = color
-        self.team = team
-        self.name = "Rook"
-        self.has_moved = has_moved
-        self.move_counter = 0
-
-    def __str__(self):
-        return colored("R", self.color)
+class Rook(Piece):
+    def __init__(self, team):
+        super().__init__(team=team, name="Rook", symbol="R")
 
     def can_move(self, move, board):
         return moves.can_move_xy(move, board)
@@ -79,16 +69,9 @@ class Rook:
         board.move(move)
 
 
-class Knight:
-    def __init__(self, team, color="white", has_moved=False):
-        self.color = color
-        self.team = team
-        self.name = "Knight"
-        self.has_moved = has_moved
-        self.move_counter = 0
-
-    def __str__(self):
-        return colored("H", self.color)
+class Knight(Piece):
+    def __init__(self, team):
+        super().__init__(team=team, name="Knight", symbol="H")
 
     def can_move(self, move, board):
         return moves.can_horsey_jump(move, board)
@@ -97,18 +80,11 @@ class Knight:
         board.move(move)
 
 
-class Pawn:
-    def __init__(self, team, color="white", has_moved=False):
-        self.color = color
-        self.team = team
-        self.name = "Pawn"
-        self.has_moved = has_moved
+class Pawn(Piece):
+    def __init__(self, team):
+        super().__init__(team, name="Pawn", symbol="P")
         self.forward = (datatypes.Vec2(0, -1) if team == 1 else datatypes.Vec2(0, 1))
         self.left = datatypes.Vec2(-self.forward.y, self.forward.x)
-        self.move_counter = 0
-
-    def __str__(self):
-        return colored("P", self.color)
 
     def can_move(self, move, board):
         return moves.can_pawn_move(self, move, board)
