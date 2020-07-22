@@ -232,16 +232,16 @@ class ChessGame:
 
         pawn = self.board.get_piece(pos)
         if promotion_choice == "Queen":
-            self.board.spaces[pos.y][pos.x] = pieces.Queen(team=pawn.team, color=color)
+            self.board.spaces[pos.y][pos.x] = pieces.Queen(team=pawn.team)
 
         if promotion_choice == "Rook":
-            self.board.spaces[pos.y][pos.x] = pieces.Rook(team=pawn.team, color=color)
+            self.board.spaces[pos.y][pos.x] = pieces.Rook(team=pawn.team)
 
         if promotion_choice == "Knight":
-            self.board.spaces[pos.y][pos.x] = pieces.Knight(team=pawn.team, color=color)
+            self.board.spaces[pos.y][pos.x] = pieces.Knight(team=pawn.team)
 
         if promotion_choice == "Bishop":
-            self.board.spaces[pos.y][pos.x] = pieces.Bishop(team=pawn.team, color=color)
+            self.board.spaces[pos.y][pos.x] = pieces.Bishop(team=pawn.team)
 
     def get_previous_move_piece(self):
         previous_move_piece = self.board.get_piece(self.move_history[self.turn_counter - 1])
