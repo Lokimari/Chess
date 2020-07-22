@@ -5,8 +5,33 @@ import pieces
 
 # Movement input, example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
 def move_from_string(string):
-    inputs = [int(num) for num in string.split(",")]
-    cur_x, cur_y, new_x, new_y = inputs
+    string_inputs = [inp for inp in string.split(",")]
+
+    print(f"string_inputs: {string_inputs}")
+
+    int_inputs = [-1, -1, -1, -1]
+
+    for inp in range(len(string_inputs)):
+        if string_inputs[inp] == "a" or string_inputs[inp] == "A" or string_inputs[inp] == "8":
+            int_inputs[inp] = 0
+        elif string_inputs[inp] == "b" or string_inputs[inp] == "B" or string_inputs[inp] == "7":
+            int_inputs[inp] = 1
+        elif string_inputs[inp] == "c" or string_inputs[inp] == "C" or string_inputs[inp] == "6":
+            int_inputs[inp] = 2
+        elif string_inputs[inp] == "d" or string_inputs[inp] == "D" or string_inputs[inp] == "5":
+            int_inputs[inp] = 3
+        elif string_inputs[inp] == "e" or string_inputs[inp] == "E" or string_inputs[inp] == "4":
+            int_inputs[inp] = 4
+        elif string_inputs[inp] == "f" or string_inputs[inp] == "F" or string_inputs[inp] == "3":
+            int_inputs[inp] = 5
+        elif string_inputs[inp] == "g" or string_inputs[inp] == "G" or string_inputs[inp] == "2":
+            int_inputs[inp] = 6
+        elif string_inputs[inp] == "h" or string_inputs[inp] == "H" or string_inputs[inp] == "1":
+            int_inputs[inp] = 7
+        else:
+            int_inputs[inp] = int(string_inputs[inp])
+
+    print(f"int_inputs: {int_inputs}")
 
     return Move(Vec2(cur_x, cur_y), Vec2(new_x, new_y))
 
