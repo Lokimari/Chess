@@ -7,8 +7,6 @@ import pieces
 def move_from_string(string):
     string_inputs = [inp for inp in string.split(",")]
 
-    print(f"string_inputs: {string_inputs}")
-
     int_inputs = [-1, -1, -1, -1]
 
     for inp in range(len(string_inputs)):
@@ -59,7 +57,7 @@ def algebraic_move(move):
         algebraic_print_list[0] = "G"
     elif algebraic_print_list[0] == 7:
         algebraic_print_list[0] = "H"
-        
+
     if algebraic_print_list[2] == 0:
         algebraic_print_list[2] = "A"
     elif algebraic_print_list[2] == 1:
@@ -76,6 +74,38 @@ def algebraic_move(move):
         algebraic_print_list[2] = "G"
     elif algebraic_print_list[2] == 7:
         algebraic_print_list[2] = "H"
+
+    if algebraic_print_list[1] == 1:
+        algebraic_print_list[1] = 1
+    elif algebraic_print_list[1] == 2:
+        algebraic_print_list[1] = 2
+    elif algebraic_print_list[1] == 3:
+        algebraic_print_list[1] = 1
+    elif algebraic_print_list[1] == 4:
+        algebraic_print_list[1] = 2
+    elif algebraic_print_list[1] == 5:
+        algebraic_print_list[1] = 1
+    elif algebraic_print_list[1] == 6:
+        algebraic_print_list[1] = 2
+    elif algebraic_print_list[1] == 7:
+        algebraic_print_list[1] = 1
+
+    if algebraic_print_list[3] == 0:
+        algebraic_print_list[3] = 8
+    elif algebraic_print_list[3] == 1:
+        algebraic_print_list[3] = 7
+    elif algebraic_print_list[3] == 2:
+        algebraic_print_list[3] = 6
+    elif algebraic_print_list[3] == 3:
+        algebraic_print_list[3] = 5
+    elif algebraic_print_list[3] == 4:
+        algebraic_print_list[3] = 4
+    elif algebraic_print_list[3] == 5:
+        algebraic_print_list[3] = 3
+    elif algebraic_print_list[3] == 6:
+        algebraic_print_list[3] = 2
+    elif algebraic_print_list[3] == 7:
+        algebraic_print_list[3] = 1
 
     algebraic_print = f"{algebraic_print_list[0]}{algebraic_print_list[1]} -> {algebraic_print_list[2]}{algebraic_print_list[3]}"
 
@@ -110,7 +140,6 @@ class ChessGame:
                 self.end_game()
             self.board.display()
             move = input(f"Player {self.player_turn}, enter move: ")
-            move = move_from_string(move)
             try:
                 move = move_from_string(move)
                 self.try_player_move(move, self.player_turn)
@@ -258,7 +287,6 @@ class ChessGame:
             if self.board.will_king_check(move, player_team, king_pos):
                 raise error_handling.CheckingKing()
 
-        # Pieces now have their own can_move methods, which references moves.py logic
         if piece.can_move(move, self.board):
             piece.do_move(move, self.board)
             print(algebraic_move(move))
