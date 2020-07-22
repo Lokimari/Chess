@@ -18,13 +18,11 @@ class ChessBoard:
 
     # Board printing with variable x/y labels, x-axis will be changed to letters in the future
     def display(self):
-        # row_num = 8
-        row_num = 0
-        board_string = "    0 1 2 3 4 5 6 7"
+        row_num = 8
+        board_string = "    A B C D E F G H"
         for row in self.spaces:
             board_string += "\n" + str(row_num) + " [ "
-            row_num += 1
-            # row_num -= 1
+            row_num -= 1
             for val in row:
                 if val is None:
                     board_string += "_ "
