@@ -223,3 +223,13 @@ class ChessGameTests(unittest.TestCase):
 
         # Assert
         self.assertFalse(is_knight_moving_inbound)
+
+    def test_new_coordinates_via_pawn_double_jump(self):
+        # Arrange
+        self.chess_board.set_piece(Vec2(0, 2), self.enemy_pawn)
+
+        # Act
+        self.chess_board.move(Move(Vec2(0, 2), Vec2(0, 4)))
+
+        # Assert
+        self.assertTrue(self.chess_board.get_piece(Vec2(0, 4)).name == "Pawn")
