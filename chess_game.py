@@ -76,37 +76,8 @@ def algebraic_move(move):
     elif algebraic_print_list[2] == 7:
         algebraic_print_list[2] = "H"
 
-    if algebraic_print_list[1] == 1:
-        algebraic_print_list[1] = 1
-    elif algebraic_print_list[1] == 2:
-        algebraic_print_list[1] = 2
-    elif algebraic_print_list[1] == 3:
-        algebraic_print_list[1] = 1
-    elif algebraic_print_list[1] == 4:
-        algebraic_print_list[1] = 2
-    elif algebraic_print_list[1] == 5:
-        algebraic_print_list[1] = 1
-    elif algebraic_print_list[1] == 6:
-        algebraic_print_list[1] = 2
-    elif algebraic_print_list[1] == 7:
-        algebraic_print_list[1] = 1
-
-    if algebraic_print_list[3] == 0:
-        algebraic_print_list[3] = 8
-    elif algebraic_print_list[3] == 1:
-        algebraic_print_list[3] = 7
-    elif algebraic_print_list[3] == 2:
-        algebraic_print_list[3] = 6
-    elif algebraic_print_list[3] == 3:
-        algebraic_print_list[3] = 5
-    elif algebraic_print_list[3] == 4:
-        algebraic_print_list[3] = 4
-    elif algebraic_print_list[3] == 5:
-        algebraic_print_list[3] = 3
-    elif algebraic_print_list[3] == 6:
-        algebraic_print_list[3] = 2
-    elif algebraic_print_list[3] == 7:
-        algebraic_print_list[3] = 1
+    algebraic_print_list[1] = abs(algebraic_print_list[1] - 8)
+    algebraic_print_list[3] = abs(algebraic_print_list[3] - 8)
 
     algebraic_print = f"{algebraic_print_list[0]}{algebraic_print_list[1]} -> {algebraic_print_list[2]}{algebraic_print_list[3]}"
 
