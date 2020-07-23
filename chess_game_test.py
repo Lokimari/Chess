@@ -8,6 +8,21 @@ from error_handling import IllegalMove
 def setup_full_board(chess_game):
     pass
 
+
+# IMPORTANT
+# Initializing Vec2 positions is done by indexes, but Move()s are done inversely with y coordinates
+# Move(Vec2(0, 2), Vec2(0, 4)) will move a starting team1 pawn forward twice
+#     0 1 2 3 4 5 6 7
+#     A B C D E F G H
+# 8 [ _ _ _ _ _ _ _ _ ]
+# 7 [ _ _ _ _ _ _ _ _ ]
+# 6 [ _ _ _ _ _ _ _ _ ]
+# 5 [ _ _ _ _ _ _ _ _ ]
+# 4 [ _ _ _ _ _ _ _ _ ]
+# 3 [ _ _ _ _ _ _ _ _ ]
+# 2 [ _ _ _ _ _ _ _ _ ]
+# 1 [ _ _ _ _ _ _ _ _ ]
+
 class ChessGameTests(unittest.TestCase):
     def setUp(self) -> None:
         self.player_turn = 1
