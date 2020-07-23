@@ -9,6 +9,7 @@ def move_from_string(string):
 
     int_inputs = [-1, -1, -1, -1]
 
+    # TODO: Convert to equation abs(num - 8) = new_num
     for inp in range(len(string_inputs)):
         if string_inputs[inp] == "a" or string_inputs[inp] == "A" or string_inputs[inp] == "8":
             int_inputs[inp] = 0
