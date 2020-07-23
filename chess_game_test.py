@@ -2,7 +2,7 @@ import unittest
 
 from chess_game import ChessGame
 from datatypes import Vec2, Move
-from pieces import Pawn, King, Knight, Rook
+from pieces import Piece, Pawn, Knight, King, Rook, Bishop, Queen
 from error_handling import IllegalMove
 
 def setup_full_board(chess_game):
@@ -19,7 +19,7 @@ class ChessGameTests(unittest.TestCase):
         self.knight = Knight(team=self.player_turn)
         self.pawn = Pawn(team=self.player_turn)
         self.enemy_pawn = Pawn(team=2)
-        self.moved_pawn = Pawn(team=1, has_moved=True)
+        self.p1_pawn = Pawn(team=1)
 
     def test_creating_a_chess_game_works_fuck(self):
         self.assertIsInstance(self.chess_game, ChessGame)
@@ -108,7 +108,7 @@ class ChessGameTests(unittest.TestCase):
         self.chess_game.board.set_piece(Vec2(5, 5), self.enemy_pawn)
 
         # Act
-        king_move = self.king.can_move(Move(king_start_pos, Vec2(4, 6)), self.chess_board)
+        king_move = self.king.can_move(Move(king_start_pos, Vec2(4, 2)), self.chess_board)
 
         # Assert
         self.assertFalse(king_move)
@@ -125,13 +125,14 @@ class ChessGameTests(unittest.TestCase):
 
     def test_pawn_may_not_double_jump_after_moving(self):
         # Arrange
-        pawn_start_pos = Vec2(5, 5)
+        pawn_start_pos = Vec2(0, 6)
 
         # Act
-        pawn_move = self.moved_pawn.can_move(Move(pawn_start_pos, Vec2(5, 3)), self.chess_board)
+        self.chess_board.move(Move(pawn_start_pos, Vec2(0, 3)))
+        pawn_move_to_test = self.p1_pawn.can_move(Move(pawn_start_pos, Vec2(5, 3)), self.chess_board)
 
         # Assert
-        self.assertFalse(pawn_move)
+        self.assertFalse(pawn_move_to_test)
 
     def test_horse_may_jump(self):
         # Arrange
@@ -198,7 +199,7 @@ class ChessGameTests(unittest.TestCase):
         # Assert
         self.assertFalse(castle_move)
 
-    def piece_may_not_move_out_of_bounds(self):
+    def test_piece_may_not_move_out_of_bounds(self):
         # Arrange
         knight_end_pos = Vec2(-2, -1)
 
