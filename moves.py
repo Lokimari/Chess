@@ -2,6 +2,14 @@ from chess_board import ChessBoard
 from datatypes import Vec2
 # Piece move logic
 
+def an_passant(move, direction, board: ChessBoard):
+    if direction == "left":
+        board.spaces[move.old.y][move.old.x - 1] = None
+    elif direction == "right":
+        board.spaces[move.old.y][move.old.x + 1] = None
+
+    print("An-passant!")
+
 # Pawn
 def can_an_passant(piece, move, board: ChessBoard):
     left_neighbor_pos = Vec2(move.old.x - 1, move.old.y)
