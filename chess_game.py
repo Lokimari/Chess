@@ -5,7 +5,7 @@ import pieces
 
 # Movement input, example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
 def move_from_string(string):
-    string_inputs = [inp for inp in string.split(",")]
+    string_inputs = [inp for inp in string]
 
     int_inputs = [-1, -1, -1, -1]
 
