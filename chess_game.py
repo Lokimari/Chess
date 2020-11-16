@@ -3,7 +3,32 @@ from datatypes import Move, Vec2
 from chess_board import ChessBoard
 import pieces
 
-# Movement input, example input: 3,3,4,4 - move piece in space 3,3 to space 4,4 if possible
+move_string_dict = {
+    "A": 0,
+    "8": 0,
+
+    "B": 1,
+    "7": 1,
+
+    "C": 2,
+    "6": 2,
+
+    "D": 3,
+    "5": 3,
+
+    "E": 4,
+    "4": 4,
+
+    "F": 5,
+    "3": 5,
+
+    "G": 6,
+    "2": 6,
+
+    "H": 7,
+    "1": 7,
+}
+
 def move_from_string(string):
     string_inputs = [inp for inp in string]
 
