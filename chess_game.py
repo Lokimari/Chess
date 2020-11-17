@@ -4,60 +4,19 @@ from chess_board import ChessBoard
 import pieces
 
 move_string_dict = {
-    "A": 0,
-    "8": 0,
-
-    "B": 1,
-    "7": 1,
-
-    "C": 2,
-    "6": 2,
-
-    "D": 3,
-    "5": 3,
-
-    "E": 4,
-    "4": 4,
-
-    "F": 5,
-    "3": 5,
-
-    "G": 6,
-    "2": 6,
-
-    "H": 7,
-    "1": 7,
+    'A': 0, '8': 0,
+    'B': 1, '7': 1,
+    'C': 2, '6': 2,
+    'D': 3, '5': 3,
+    'E': 4, '4': 4,
+    'F': 5, '3': 5,
+    'G': 6, '2': 6,
+    'H': 7, '1': 7,
 }
 
 def move_from_string(string):
-    string_inputs = [inp for inp in string]
-
-    int_inputs = [-1, -1, -1, -1]
-
-    # TODO: Convert to equation abs(num - 8) = new_num
-    for inp in range(len(string_inputs)):
-        if string_inputs[inp] == "a" or string_inputs[inp] == "A" or string_inputs[inp] == "8":
-            int_inputs[inp] = 0
-        elif string_inputs[inp] == "b" or string_inputs[inp] == "B" or string_inputs[inp] == "7":
-            int_inputs[inp] = 1
-        elif string_inputs[inp] == "c" or string_inputs[inp] == "C" or string_inputs[inp] == "6":
-            int_inputs[inp] = 2
-        elif string_inputs[inp] == "d" or string_inputs[inp] == "D" or string_inputs[inp] == "5":
-            int_inputs[inp] = 3
-        elif string_inputs[inp] == "e" or string_inputs[inp] == "E" or string_inputs[inp] == "4":
-            int_inputs[inp] = 4
-        elif string_inputs[inp] == "f" or string_inputs[inp] == "F" or string_inputs[inp] == "3":
-            int_inputs[inp] = 5
-        elif string_inputs[inp] == "g" or string_inputs[inp] == "G" or string_inputs[inp] == "2":
-            int_inputs[inp] = 6
-        elif string_inputs[inp] == "h" or string_inputs[inp] == "H" or string_inputs[inp] == "1":
-            int_inputs[inp] = 7
-        else:
-            int_inputs[inp] = int(string_inputs[inp])
-
-    cur_x, cur_y, new_x, new_y = int_inputs
-
-    return Move(Vec2(int(cur_x), int(cur_y)), Vec2(int(new_x), int(new_y)))
+    cur_x, cur_y, new_x, new_y =[int(move_string_dict[x.upper()]) for x in string]
+    return Move(Vec2(cur_x, cur_y), Vec2(new_x, new_y))
 
 def algebraic_move(move):
     algebraic_print_list = [-1, -1, -1, -1]
