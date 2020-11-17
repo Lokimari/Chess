@@ -31,23 +31,14 @@ algebraic_print_dict = {
 }
 
 def algebraic_move(move):
-    algebraic_print_list = [-1, -1, -1, -1]
+    print_list = [-1, -1, -1, -1]
+    print_list[0] = algebraic_print_dict[move.old.x]
+    print_list[2] = algebraic_print_dict[move.new.x]
 
-    algebraic_print_list[0] = move.old.x
-    algebraic_print_list[1] = move.old.y
+    print_list[1] = abs(move.old.y - 8)
+    print_list[3] = abs(move.new.y - 8)
 
-    algebraic_print_list[2] = move.new.x
-    algebraic_print_list[3] = move.new.y
-
-    algebraic_print_list[0] = algebraic_print_dict[algebraic_print_list[0]]
-    algebraic_print_list[2] = algebraic_print_dict[algebraic_print_list[2]]
-
-    algebraic_print_list[1] = abs(algebraic_print_list[1] - 8)
-    algebraic_print_list[3] = abs(algebraic_print_list[3] - 8)
-
-    algebraic_print = f"{algebraic_print_list[0]}{algebraic_print_list[1]} -> {algebraic_print_list[2]}{algebraic_print_list[3]}"
-
-    return algebraic_print
+    return f"{print_list[0]}{print_list[1]} -> {print_list[2]}{print_list[3]}"
 
 # Game Process
 class ChessGame:
