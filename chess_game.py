@@ -43,16 +43,25 @@ def algebraic_move(move):
 # Game Process
 class ChessGame:
     def __init__(self, setup_pieces=False):
+        # Board
         self.board = ChessBoard()
+
+        # Kings
         self.highness = None
         self.p1_king = None
         self.p2_king = None
+
+        # Player Data
         self.player_turn = 1
         self.other_player_turn = 2
-        self.turn_counter = 0
-        self.move_history = []
         self.player_1_color = "yellow"
         self.player_2_color = "magenta"
+
+        # Game data
+        self.turn_counter = 0
+        self.move_history = []
+
+        # Initialize
         if setup_pieces:
             self.setup_pieces()
 
@@ -64,9 +73,12 @@ class ChessGame:
     def run(self):
         # Game Process Logic
         while True:
+            # Game over
             if self.is_checkmate():
                 print("Checkmate")
                 self.end_game()
+
+            # Game in progress
             self.board.display()
             move = input(f"Player {self.player_turn}, enter move: ")
             try:
@@ -74,6 +86,7 @@ class ChessGame:
                 self.try_player_move(move, self.player_turn)
                 self.move_history.append(move)
                 self.board.get_piece(move.new).move_counter += 1
+
                 self.next_player_turn()
 
             # Error Handling
@@ -183,6 +196,7 @@ class ChessGame:
     def try_player_move(self, move, player_team):
         cur, new = move.old, move.new
 
+        # TODO - Prettify, move things to appropriate functions
         # Bounds check
         if not self.board.in_board(cur) or not self.board.in_board(new):
             raise error_handling.OutOfBounds()
