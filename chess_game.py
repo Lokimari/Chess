@@ -31,23 +31,14 @@ algebraic_print_dict = {
 }
 
 def algebraic_move(move):
-    algebraic_print_list = [-1, -1, -1, -1]
+    print_list = [-1, -1, -1, -1]
+    print_list[0] = algebraic_print_dict[move.old.x]
+    print_list[2] = algebraic_print_dict[move.new.x]
 
-    algebraic_print_list[0] = move.old.x
-    algebraic_print_list[1] = move.old.y
+    print_list[1] = abs(move.old.y - 8)
+    print_list[3] = abs(move.new.y - 8)
 
-    algebraic_print_list[2] = move.new.x
-    algebraic_print_list[3] = move.new.y
-
-    algebraic_print_list[0] = algebraic_print_dict[algebraic_print_list[0]]
-    algebraic_print_list[2] = algebraic_print_dict[algebraic_print_list[2]]
-
-    algebraic_print_list[1] = abs(algebraic_print_list[1] - 8)
-    algebraic_print_list[3] = abs(algebraic_print_list[3] - 8)
-
-    algebraic_print = f"{algebraic_print_list[0]}{algebraic_print_list[1]} -> {algebraic_print_list[2]}{algebraic_print_list[3]}"
-
-    return algebraic_print
+    return f"{print_list[0]}{print_list[1]} -> {print_list[2]}{print_list[3]}"
 
 # Game Process
 class ChessGame:
@@ -101,28 +92,28 @@ class ChessGame:
     # Piece placement
     def setup_pieces(self):
         # Top team
-        # for num in range(0, 8):
-        #     self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2, color="magenta"))
-        self.board.set_piece(Vec2(4, 1), pieces.Rook(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(7, 0), pieces.Rook(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(1, 0), pieces.Knight(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2, color="magenta"))
-        self.p2_king = self.board.set_piece(Vec2(3, 0), pieces.King(team=2, color="magenta"))
-        # self.board.set_piece(Vec2(4, 0), pieces.Queen(team=2, color="magenta"))
+        for num in range(0, 8):
+            self.board.set_piece(Vec2(num, 1), pieces.Pawn(team=2))
+        self.board.set_piece(Vec2(0, 0), pieces.Rook(team=2))
+        self.board.set_piece(Vec2(7, 0), pieces.Rook(team=2))
+        self.board.set_piece(Vec2(1, 0), pieces.Knight(team=2))
+        self.board.set_piece(Vec2(6, 0), pieces.Knight(team=2))
+        self.board.set_piece(Vec2(2, 0), pieces.Bishop(team=2))
+        self.board.set_piece(Vec2(5, 0), pieces.Bishop(team=2))
+        self.p2_king = self.board.set_piece(Vec2(3, 0), pieces.King(team=2))
+        self.board.set_piece(Vec2(4, 0), pieces.Queen(team=2))
 
         # Bottom Team
-        # for num in range(0, 8):
-        #     self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1, color="yellow"))
-        self.board.set_piece(Vec2(4, 6), pieces.Bishop(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1, color="yellow"))
-        self.p1_king = self.board.set_piece(Vec2(4, 7), pieces.King(team=1, color="yellow"))
-        # self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1, color="yellow"))
+        for num in range(0, 8):
+            self.board.set_piece(Vec2(num, 6), pieces.Pawn(team=1))
+        self.board.set_piece(Vec2(0, 7), pieces.Rook(team=1))
+        self.board.set_piece(Vec2(7, 7), pieces.Rook(team=1))
+        self.board.set_piece(Vec2(1, 7), pieces.Knight(team=1))
+        self.board.set_piece(Vec2(6, 7), pieces.Knight(team=1))
+        self.board.set_piece(Vec2(2, 7), pieces.Bishop(team=1))
+        self.board.set_piece(Vec2(5, 7), pieces.Bishop(team=1))
+        self.p1_king = self.board.set_piece(Vec2(4, 7), pieces.King(team=1))
+        self.board.set_piece(Vec2(3, 7), pieces.Queen(team=1))
 
         # cool stuff
         self.board.print_all_moves_for_piece(Vec2(4, 7))
