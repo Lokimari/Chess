@@ -18,47 +18,29 @@ def move_from_string(string):
     cur_x, cur_y, new_x, new_y =[int(move_string_dict[x.upper()]) for x in string]
     return Move(Vec2(cur_x, cur_y), Vec2(new_x, new_y))
 
+
+algebraic_print_dict = {
+    0: "A",
+    1: "B",
+    2: "C",
+    3: "D",
+    4: "E",
+    5: "F",
+    6: "G",
+    7: "H"
+}
+
 def algebraic_move(move):
     algebraic_print_list = [-1, -1, -1, -1]
+
     algebraic_print_list[0] = move.old.x
     algebraic_print_list[1] = move.old.y
 
     algebraic_print_list[2] = move.new.x
     algebraic_print_list[3] = move.new.y
 
-    if algebraic_print_list[0] == 0:
-        algebraic_print_list[0] = "A"
-    elif algebraic_print_list[0] == 1:
-        algebraic_print_list[0] = "B"
-    elif algebraic_print_list[0] == 2:
-        algebraic_print_list[0] = "C"
-    elif algebraic_print_list[0] == 3:
-        algebraic_print_list[0] = "D"
-    elif algebraic_print_list[0] == 4:
-        algebraic_print_list[0] = "E"
-    elif algebraic_print_list[0] == 5:
-        algebraic_print_list[0] = "F"
-    elif algebraic_print_list[0] == 6:
-        algebraic_print_list[0] = "G"
-    elif algebraic_print_list[0] == 7:
-        algebraic_print_list[0] = "H"
-
-    if algebraic_print_list[2] == 0:
-        algebraic_print_list[2] = "A"
-    elif algebraic_print_list[2] == 1:
-        algebraic_print_list[2] = "B"
-    elif algebraic_print_list[2] == 2:
-        algebraic_print_list[2] = "C"
-    elif algebraic_print_list[2] == 3:
-        algebraic_print_list[2] = "D"
-    elif algebraic_print_list[2] == 4:
-        algebraic_print_list[2] = "E"
-    elif algebraic_print_list[2] == 5:
-        algebraic_print_list[2] = "F"
-    elif algebraic_print_list[2] == 6:
-        algebraic_print_list[2] = "G"
-    elif algebraic_print_list[2] == 7:
-        algebraic_print_list[2] = "H"
+    algebraic_print_list[0] = algebraic_print_dict[algebraic_print_list[0]]
+    algebraic_print_list[2] = algebraic_print_dict[algebraic_print_list[2]]
 
     algebraic_print_list[1] = abs(algebraic_print_list[1] - 8)
     algebraic_print_list[3] = abs(algebraic_print_list[3] - 8)
